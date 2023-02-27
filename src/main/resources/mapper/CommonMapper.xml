@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myapp.service.BoardService">
+
+    <select id="selectBoardList" parameterType="com.myapp.vo.BoardVO" resultType="com.myapp.vo.BoardVO">
+        select seq
+        , title
+        , content
+        , id
+        , if(DATE_FORMAT(now(), '%c-%d') = DATE_FORMAT(registDate, '%c-%d'),DATE_FORMAT(registDate, '%H:%i'), DATE_FORMAT(registDate, '%c-%d')) as registDate
+        , DATE_FORMAT(modifyDate, '%c-%d %h:%i') as modifyDate
+        , deleteYn
+        , row_number() over() as rowNum
+        	from board
+        where deleteYn = 'N'
+        <choose>
+        	<when test='title != null and content != null'>
+        		and title like "%${content}%" ||  content like "%${content}%"
+        	</when>
+        	<when test='title != null'>
+        		and title like "%${title}%"
+        	</when>
+			<when test='content != null'>
+        		and content like "%${content}%"
+        	</when>
+        	<when test='id != null'>
+        		and id like "%${id}%"
+        	</when>        	
+        </choose>
+        	order by seq desc
+        	limit #{pagePerNum} offset #{offset}
+    </select>
+      
+    <select id="selectBoardListCnt" parameterType="com.myapp.vo.BoardVO" resultType="int">
+    	select 
+    		count(*)
+    	from board
+    	where deleteYn = 'N'
+        <choose>
+        	<when test='title != null and content != null'>
+        		and title like "%${content}%" ||  content like "%${content}%"
+        	</when>
+        	<when test='title != null'>
+        		and title like "%${title}%"
+        	</when>
+			<when test='content != null'>
+        		and content like "%${content}%"
+        	</when>
+        	<when test='id != null'>
+        		and id like "%${id}%"
+        	</when>        	
+        </choose>
+    </select>
+    
+    <select id="selectBoardOne" resultType="com.myapp.vo.BoardVO" parameterType="int">
+    	select * 
+    		from board 
+    	where seq = #{seq}
+    </select>
+    
+    <insert id="insertBoard" parameterType="com.myapp.vo.BoardVO">
+    	insert into Board (
+    			title,content,id,registDate,modifyDate,deleteYn
+    		) 
+    		values (
+    			#{title},#{content},#{id},now(),now(),'N'
+    		)
+    </insert>
+    
+    <update id="deleteBoard" parameterType="int">
+    	update Board set deleteYn = 'Y' where seq = #{seq}
+    </update>  
+    
+    <update id="updateBoard" parameterType="com.myapp.vo.BoardVO">
+    	update Board set
+    		title = ${title}
+    		,content = ${content}
+    		,modifyDate = now()
+    		,deleteYn
+    	where seq = #{seq}
+    </update>
+    
+    
+    
+</mapper>
