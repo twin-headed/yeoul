@@ -8,6 +8,7 @@
 	href="/resources/css/style.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/resources/js/mustache.js"></script>
 <style type="text/css">
 div.wrap1 .wrap2 {
 	/* only with left panel- background-image: url(img/bg1.gif); */
@@ -158,15 +159,15 @@ select, option {
 							</tr>
 						</thead>
 						<tbody id="list">
-						{{#list}}
-							<tr>
-							<td>{{seq}}</td>
-							<td><a href="/board/view/{{seq}}">{{title}}</a></td>
-							<td>{{id}}</td>
-							<td>{{registDate}}</td>
-							<td>{{deleteYn}}</td>
-							</tr>
-						{{/list}}
+							{{#list}}
+								<tr>
+								<td>{{seq}}</td>
+								<td><a href="/board/view/{{seq}}">{{title}}</a></td>
+								<td>{{id}}</td>
+								<td>{{registDate}}</td>
+								<td>{{deleteYn}}</td>
+								</tr>
+							{{/list}}
 						</tbody>
 					</table>
 					
@@ -226,11 +227,8 @@ select, option {
 				type : "POST",
 				data : JSON.stringify(data),
 				contentType: 'application/json',
-				dataType: 'JSON',
 				url : "/board/list",
 				success : function(response) {
-					var template = $('#template').html();
-					var rendered = Mustache.render(template, response); 
 					console.log(response);
 					$("#list").empty();
 					$("#paging").empty();

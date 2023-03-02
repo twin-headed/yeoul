@@ -18,7 +18,9 @@ public class MvcConfig implements WebMvcConfigurer {
 		/* '/img/**'로 호출하는 자원은 '/static/img/' 폴더 아래에서 찾는다. */ 
         registry.addResourceHandler("/resources/img/**").addResourceLocations("classpath:/static/resources/img/").setCachePeriod(60 * 60 * 24 * 365); 
 		/* '/font/**'로 호출하는 자원은 '/static/font/' 폴더 아래에서 찾는다. */ 
-        registry.addResourceHandler("/resources/font/**").addResourceLocations("classpath:/static/resources/font/").setCachePeriod(60 * 60 * 24 * 365); 
+        registry.addResourceHandler("/resources/font/**").addResourceLocations("classpath:/static/resources/font/").setCachePeriod(60 * 60 * 24 * 365);
+        /* '/summerNote/**'로 호출하는 자원은 '/static/summerNote/' 폴더 아래에서 찾는다. */
+        registry.addResourceHandler("/resources/summerNote/**").addResourceLocations("classpath:/static/resources/summerNote/").setCachePeriod(60 * 60 * 24 * 365);
 	}
 
 }

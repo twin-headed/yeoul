@@ -1,5 +1,6 @@
 package com.myapp.controller;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.mustachejava.Mustache;
 import com.myapp.service.BoardService;
 import com.myapp.vo.BoardVO;
+import com.samskivert.mustache.Mustache;
 
 /**
  * Handles requests for the application home page.
@@ -27,13 +28,12 @@ import com.myapp.vo.BoardVO;
 public class BoardController {
 	
 	@Autowired
-    private Mustache.Compiler mustacheCompiler;
+	private Mustache.Compiler mustacheCompiler;
 	
 	@Autowired
 	private BoardService service;
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-	
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	public Map<String, Object> list(@RequestBody BoardVO vo, Model model) {
@@ -75,6 +75,15 @@ public class BoardController {
 		map.put("endPage", endPage);
 		map.put("pageNum", page);
 		map.put("endBlock", endBlock);
+		/*
+		StringWriter writer = new StringWriter();
+		Map<String, Object> context = new HashMap<>();
+		context.put("list", list);
+		mustacheCompiler.compile("classpath:static/boardTemplate.html").execute(context,writer);
+		String html = writer.toString();
+		Map<String, Object> data = new HashMap<>();
+		data.put("html", html);
+		*/
 		return map;
 	}
 	
