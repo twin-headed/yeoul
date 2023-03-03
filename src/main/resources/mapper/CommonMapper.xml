@@ -61,7 +61,7 @@
     </select>
     
     <insert id="insertBoard" parameterType="com.myapp.vo.BoardVO">
-    	insert into Board (
+    	insert into board (
     			title,content,id,registDate,modifyDate,deleteYn
     		) 
     		values (
@@ -70,11 +70,11 @@
     </insert>
     
     <update id="deleteBoard" parameterType="int">
-    	update Board set deleteYn = 'Y' where seq = #{seq}
+    	update board set deleteYn = 'Y' where seq = #{seq}
     </update>  
     
     <update id="updateBoard" parameterType="com.myapp.vo.BoardVO">
-    	update Board set
+    	update board set
     		title = ${title}
     		,content = ${content}
     		,modifyDate = now()
