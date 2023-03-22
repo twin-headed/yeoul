@@ -27,6 +27,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String home(Model model, HttpServletRequest request) {
+		System.out.println("entered home");
 		return "home";
 	}
 }
