@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class MessageController {
 	
-	@Autowired
+    @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     private String message;
