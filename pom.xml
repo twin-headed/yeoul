@@ -32,6 +32,35 @@
 	<dependencies>
 		
 		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		  </dependency>
+		  <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		  </dependency>
+		  <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-messaging</artifactId>
+		  </dependency>
+		
+		<dependency>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-controls</artifactId>
+             <version>13</version>
+         </dependency>
+         <dependency>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-fxml</artifactId>
+             <version>13</version>
+         </dependency>
+		
+		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-websocket</artifactId>
+		</dependency>
+		
+		<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-mustache</artifactId>
     	</dependency>
@@ -40,9 +69,7 @@
 	<dependency>
     	<groupId>com.samskivert</groupId>
     	<artifactId>jmustache</artifactId>
-    	<version>1.15</version>
 	</dependency>
-
 		
 	<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
 		<dependency>

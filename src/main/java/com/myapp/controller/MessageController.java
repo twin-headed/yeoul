@@ -1,22 +1,33 @@
 package com.myapp.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import javax.websocket.server.ServerEndpoint;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * Handles requests for the application home page.
  */
-@Controller
+@ServerEndpoint("/websocket")
 public class MessageController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
-	
-	@RequestMapping(value = "/message", method = RequestMethod.POST)
-	public void message(@RequestBody String message) {
-		logger.info("message : {}", message);
-	}
+	@Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+    private String message;
+
+    @RequestMapping(value = "/message", method = RequestMethod.POST)
+    public void setMessage(@RequestBody String message) {
+        this.message = message; // 전송할 메시지 저장
+        sendMessage(); // 메시지 전송
+    }
+
+    private void sendMessage() {
+        simpMessagingTemplate.convertAndSend("/topic/message", message); // 메시지 전송
+    }
 	
 }

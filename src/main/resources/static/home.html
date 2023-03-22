@@ -1,76 +1,276 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="/resources/css/bootstrap.css">
-<link rel="stylesheet" type="text/css" media="screen, projection"
-	href="/resources/css/menu.css">
-<link rel="stylesheet" type="text/css" media="screen, projection"
-	href="/resources/css/style.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type"
-	content="text/html; charset=UTF-8">
-<style type="text/css">
-div.wrap1 .wrap2 {
-	/* only with left panel- background-image: url(img/bg1.gif); */
-	/* right and left panel */
-	background-image: url(/resources/img/bg2.gif);
-	/* only with right panel - background-image: url(img/bg3.gif); */
-}
-
-.jumbotron {
-	background-size: cover; =
-	color: white;
-}
-
-*, *::before, *::after {
-    box-sizing: initial; 
-}
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+<title>채팅페이지</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+		#roomWrap {
+		    width: 200px;
+		}
+		
+		#roomList {
+		    border: 1px solid #0084FF;
+		    border-radius: 5px;
+		}
+		
+		#roomHeader {
+		    background-color: #0084FF;
+		    color: #fff;
+		    height: 40px;
+		    font-size: 18px;
+		    line-height: 40px;
+		    text-align: center;
+		    border-radius: 5px;
+		}
+		
+		.roomEl {
+		    text-align: center;
+		    border-bottom: 1px solid #f0f0f0;
+		    padding: 10px 0px;
+		    cursor: pointer;
+		}
+		
+		.roomEl:hover{
+		    background: #f0f0f0;
+		}
+		
+		.roomEl.active{
+		    background: #f0f0f0;
+		}
+		
+		#chatWrap {
+		    width: 600px;
+		    border: 1px solid #ddd;
+		}
+		
+		#chatHeader {
+		    height: 60px;
+		    text-align: center;
+		    line-height: 60px;
+		    font-size: 25px;
+		    font-weight: 900;
+		    border-bottom: 1px solid #ddd;
+		}
+		
+		#chatLog {
+		    height: 700px;
+		    overflow-y: auto;
+		    padding: 10px;
+		}
+		
+		.myMsg {
+		    text-align: right;
+		}
+		
+		.anotherMsg {
+		    text-align: left;
+		    margin-bottom: 5px;
+		}
+		
+		.msg {
+		    display: inline-block;
+		    border-radius: 15px;
+		    padding: 7px 15px;
+		    margin-bottom: 10px;
+		    margin-top: 5px;
+		
+		}
+		
+		.anotherMsg > .msg {
+		    background-color: #f1f0f0;
+		
+		}
+		
+		.myMsg > .msg {
+		    background-color: #0084FF;
+		    color: #fff;
+		}
+		
+		.anotherName {
+		    font-size: 12px;
+		    display: block;
+		}
+		
+		#chatForm {
+		    display: block;
+		    width: 100%;
+		    height: 50px;
+		    border-top: 2px solid #f0f0f0;
+		}
+		
+		#message {
+		    width: 85%;
+		    height: calc(100% - 1px);
+		    border: none;
+		    padding-bottom: 0;
+		}
+		
+		#message:focus {
+		    outline: none;
+		}
+		
+		#chatForm > button[type=button] {
+		    outline: none;
+		    border: none;
+		    background: none;
+		    color: #0084FF;
+		    font-size: 17px;
+		}
+		
+		#memberWrap{
+		    width: 200px;
+		}
+		
+		#memberList {
+		    border: 1px solid #aaaaaa;
+		    border-radius: 5px;
+		}
+		
+		#memberHeader {
+		    height: 40px;
+		    font-size: 18px;
+		    line-height: 40px;
+		    padding-left: 15px;
+		    border-bottom: 1px solid #f0f0f0;
+		    font-weight: 600;
+		}
+		
+		.memberEl {
+		    border-bottom: 1px solid #f0f0f0;
+		    padding: 10px 20px;
+		    font-size: 14px;
+		}
+		
+		#contentCover{
+		    width: 1280px;
+		    margin: 0 auto;
+		    padding-top: 20px;
+		    display: flex;
+		    justify-content: space-around;
+		}
+		
+		html, body {
+		    width: 100%;
+		    height: 100%;
+		    margin: 0;
+		    padding: 0;
+		}
+		
+		#wrapper::after {
+		    clear: both;
+		    content: '';
+		    display: block;
+		}
+		
+		#userWrap {
+		    display: block;
+		}
+		
+		.btn {
+		    background: #fff;
+		    padding: 7px 40px;
+		    border: 1px solid RGB(0, 126, 243);
+		    color: RGB(0, 126, 243);
+		    font-size: 17px;
+		}
+		
+		form input[type=text], form input[type=password] {
+		    width: 70%;
+		    height: 30px;
+		    padding-left: 15px;
+		    font-size: 17px;
+		    border: 1px solid #aaa;
+		}
+		
+		button[type=button],
+		input[type=submit],
+		button {
+		    cursor: pointer;
+		}
+		
+		nav{
+		    width: 100%;
+		    min-width: 1280px;
+		    height: 50px;
+		    background: #0084FF;
+		    color: #fff;
+		    padding: 0px 20px;
+		    box-sizing: border-box;
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    font-size: 17px;
+		}
+		
+		#logoutBtn{
+		    cursor: pointer;
+		}
+		
+		#menuList {
+		    float: left;
+		    width: 200px;
+		    border: 1px solid #0084FF;
+		    border-radius: 5px;
+		    margin: 20px;
+		}
+		
+		#menuHeader {
+		    background-color: #0084FF;
+		    color: #fff;
+		    height: 40px;
+		    font-size: 18px;
+		    line-height: 40px;
+		    text-align: center;
+		    border-radius: 5px;
+		}
+		
+		.menuBtn {
+		    text-align: center;
+		    border-bottom: 1px solid #f0f0f0;
+		    padding: 10px 0px;
+		}
 </style>
 </head>
 <body>
-<div class="wrap1">
-  <div class="wrap2">
-    <div class="logo" class="logo" style="cursor: pointer;">
-      <div style="display:inline; float:left;"> 여울서버
-        <div class="slogan">여러분을 초대합니다.</div>
-      </div>
-      <div style="display:inline; float:right">
-                
-      </div>
-    </div>
-    
-    <div id="menu">
-      <div class="menu" style="margin-top: -16px;">
-        <ul>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li><span class="hlavny_"><a href="https://t.me/yeoulbaramchat">채팅방</a></span></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li><span class="hlavny_"><a href="https://www.mediafire.com/file/jncheucvpbyfs8t/%255B21.12.10%255D_Yeoulserver.zip/file">자료실(다운로드)
-          </a></span></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li><span class="hlavny_"><a href="/board/list">홍보게시판
-          </a></span></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li class="active"></li>
-        </ul>
-      </div>
-      <img src="/resources/img/바홍이.jpg" style="width:660px; float: right"/>
-        <div class="header">여울서버는 어떤곳인가요?</div>
-          <div class="text"> <br>안녕하세요.여울GM입니다.<br> 경험치 보정배율 서버입니다.<br> 
-          서버는 24시간 상시 ON입니다.<br>
-          오래 운영할테니 많이 찾아주세요.<br>  <br>감사합니다.<br><br><br>서버오픈일 2020.12.24</div>
-          <h2><div class="header">경험치 배율: <br>1배 -> 보정배율 변경<br><br><br> 서버 구현률: 100%<br> 서버 안정성: 100%<br><br><br>Made by 아기사자</a></div></h2>
-    </div>
-    </div>
-      <div style="text-align: center;">구버전 프리 바람의나라-Renewal By Yeoulserver</div> 
-  </div>
+	<div id="contentWrap">
+	    <nav>
+			<span id="nav-header">
+	            chat App
+	        </span>
+	    </nav>
+	    <div id="contentCover">
+	        <div id="chatWrap">
+	            <div id="chatHeader">Everyone</div>
+	            <div id="chatLog">
+	                
+	            </div>
+	            <div id="chatForm">
+	                <input type="text" id="message" placeholder="메시지를 입력하세요" onkeyup="checkEnter(event);">
+	                <button type="button" onclick="sendMessage();">보내기</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+<script src="/resources/js/jquery-3.1.1.js"></script>
+<script>
+  var start = function() {
+	  var socket = new WebSocket('ws://' + window.location.host + '/websocket'); // 웹소켓 연결
+		
+		socket.onopen = function(event) { // 연결이 성공한 경우
+		  console.log('WebSocket 연결이 성공하였습니다.');
+		}
+		
+		socket.onmessage = function(event) { // 서버에서 메시지를 받은 경우
+			var str = '';
+		     str = '<div class="anotherMsg">';
+		     str += '<span class="msg">'+ event.data + '</span>';
+		     str += '</div>';
+		     $("#chatLog").append(str);
+		}
+  }();
+</script>
+
 </body>
 </html>
