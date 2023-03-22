@@ -13,9 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Handles requests for the application home page.
  */
+@Slf4j
 @ServerEndpoint("/websocket")
 @Controller
-@Slf4j
 public class MessageController {
 	
 	@Autowired
