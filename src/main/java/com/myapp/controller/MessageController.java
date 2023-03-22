@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MessageController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 	
 	@RequestMapping(value = "/message", method = RequestMethod.POST)
 	public void message(@RequestBody String message) {
-		logger.info("message : " + message);
+		logger.info("message : {}", message);
 	}
 	
 }
