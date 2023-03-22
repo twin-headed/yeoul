@@ -4,6 +4,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
  * Handles requests for the application home page.
  */
 @ServerEndpoint("/websocket")
+@Controller
+@Slf4j
 public class MessageController {
 	
 	@Autowired
@@ -22,6 +25,7 @@ public class MessageController {
 
     @RequestMapping(value = "/message", method = RequestMethod.POST)
     public void setMessage(@RequestBody String message) {
+    	log.info("message : " + message);
         this.message = message; // 전송할 메시지 저장
         sendMessage(); // 메시지 전송
     }
