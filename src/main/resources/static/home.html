@@ -1,76 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="/resources/css/bootstrap.css">
-<link rel="stylesheet" type="text/css" media="screen, projection"
-	href="/resources/css/menu.css">
-<link rel="stylesheet" type="text/css" media="screen, projection"
-	href="/resources/css/style.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type"
-	content="text/html; charset=UTF-8">
-<style type="text/css">
-div.wrap1 .wrap2 {
-	/* only with left panel- background-image: url(img/bg1.gif); */
-	/* right and left panel */
-	background-image: url(/resources/img/bg2.gif);
-	/* only with right panel - background-image: url(img/bg3.gif); */
-}
-
-.jumbotron {
-	background-size: cover; =
-	color: white;
-}
-
-*, *::before, *::after {
-    box-sizing: initial; 
-}
-</style>
+    <title>WebSocket Example</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 </head>
 <body>
-<div class="wrap1">
-  <div class="wrap2">
-    <div class="logo" class="logo" style="cursor: pointer;">
-      <div style="display:inline; float:left;"> ì—¬ìš¸ì„œë²„
-        <div class="slogan">ì—¬ëŸ¬ë¶„ì„ ì´ˆëŒ€í•©ë‹ˆë‹¤.</div>
-      </div>
-      <div style="display:inline; float:right">
-                
-      </div>
-    </div>
-    
-    <div id="menu">
-      <div class="menu" style="margin-top: -16px;">
-        <ul>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li><span class="hlavny_"><a href="https://t.me/yeoulbaramchat">ì±„íŒ…ë°©</a></span></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li><span class="hlavny_"><a href="https://www.mediafire.com/file/jncheucvpbyfs8t/%255B21.12.10%255D_Yeoulserver.zip/file">ìë£Œì‹¤(ë‹¤ìš´ë¡œë“œ)
-          </a></span></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li><span class="hlavny_"><a href="/board/list">í™ë³´ê²Œì‹œíŒ
-          </a></span></li>
-          <li><img src="/resources/img/divider2.png" alt=""></li>
-          <li class="active"></li>
-        </ul>
-      </div>
-      <img src="/resources/img/ë°”í™ì´.jpg" style="width:660px; float: right"/>
-        <div class="header">ì—¬ìš¸ì„œë²„ëŠ” ì–´ë–¤ê³³ì¸ê°€ìš”?</div>
-          <div class="text"> <br>ì•ˆë…•í•˜ì„¸ìš”.ì—¬ìš¸GMì…ë‹ˆë‹¤.<br> ê²½í—˜ì¹˜ ë³´ì •ë°°ìœ¨ ì„œë²„ì…ë‹ˆë‹¤.<br> 
-          ì„œë²„ëŠ” 24ì‹œê°„ ìƒì‹œ ONì…ë‹ˆë‹¤.<br>
-          ì˜¤ë˜ ìš´ì˜í• í…Œë‹ˆ ë§ì´ ì°¾ì•„ì£¼ì„¸ìš”.<br>  <br>ê°ì‚¬í•©ë‹ˆë‹¤.<br><br><br>ì„œë²„ì˜¤í”ˆì¼ 2020.12.24</div>
-          <h2><div class="header">ê²½í—˜ì¹˜ ë°°ìœ¨: <br>1ë°° -> ë³´ì •ë°°ìœ¨ ë³€ê²½<br><br><br> ì„œë²„ êµ¬í˜„ë¥ : 100%<br> ì„œë²„ ì•ˆì •ì„±: 100%<br><br><br>Made by ì•„ê¸°ì‚¬ì</a></div></h2>
-    </div>
-    </div>
-      <div style="text-align: center;">êµ¬ë²„ì „ í”„ë¦¬ ë°”ëŒì˜ë‚˜ë¼-Renewal By Yeoulserver</div> 
-  </div>
+    <div id="message"></div>
+    <script>
+  //À¥¼ÒÄÏ »ı¼º(·Î±×ÀÎ, ·Î±×¾Æ¿ô ÆäÀÌÁö Á¦¿Ü)
+	var socket = function(){
+		var serverIp = window.location.hostname;
+
+		ws = new WebSocket("ws://" + serverIp + ":8080/websocket");
+		
+		/**
+	    * À¥¼ÒÄÏ »ç¿ëÀÚ ¿¬°á ¼º¸³ÇÏ´Â °æ¿ì È£Ãâ
+	    */
+	    ws.onopen = function(message) {
+			console.log("connect success");
+	    };
+	    
+		/**
+	     * À¥¼ÒÄÏ ¸Ş½ÃÁö(From Server) ¼ö½ÅÇÏ´Â °æ¿ì È£Ãâ
+	     */
+	     ws.onmessage = function(message) {
+		     var str = '';
+		     
+		     str = '<div class="anotherMsg">';
+		     str += '<span class="msg">'+ message.data + '</span>';
+		     str += '</div>';
+		     
+		     $("#chatLog").append(str);
+	    };
+
+	    /**
+	     * À¥¼ÒÄÏ »ç¿ëÀÚ ¿¬°á ÇØÁ¦ÇÏ´Â °æ¿ì È£Ãâ
+	     */
+	     ws.onclose = function(message) {
+	   	    console.log("Server is disconnected.");
+	   	 };
+
+	    /**
+	     * À¥¼ÒÄÏ ¿¡·¯ ¹ß»ıÇÏ´Â °æ¿ì È£Ãâ
+	     */
+	     ws.onerror = function(message) {
+	    	commonAlert("Error!");
+	    };
+	}();
+    </script>
 </body>
 </html>
