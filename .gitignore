@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### bin 하위 설정 ###
+**/bin/
+**/bin/**
