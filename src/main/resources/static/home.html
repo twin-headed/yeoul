@@ -1,53 +1,276 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>WebSocket Example</title>
-    <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+<title>ì±„íŒ…í˜ì´ì§€</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+		#roomWrap {
+		    width: 200px;
+		}
+		
+		#roomList {
+		    border: 1px solid #0084FF;
+		    border-radius: 5px;
+		}
+		
+		#roomHeader {
+		    background-color: #0084FF;
+		    color: #fff;
+		    height: 40px;
+		    font-size: 18px;
+		    line-height: 40px;
+		    text-align: center;
+		    border-radius: 5px;
+		}
+		
+		.roomEl {
+		    text-align: center;
+		    border-bottom: 1px solid #f0f0f0;
+		    padding: 10px 0px;
+		    cursor: pointer;
+		}
+		
+		.roomEl:hover{
+		    background: #f0f0f0;
+		}
+		
+		.roomEl.active{
+		    background: #f0f0f0;
+		}
+		
+		#chatWrap {
+		    width: 600px;
+		    border: 1px solid #ddd;
+		}
+		
+		#chatHeader {
+		    height: 60px;
+		    text-align: center;
+		    line-height: 60px;
+		    font-size: 25px;
+		    font-weight: 900;
+		    border-bottom: 1px solid #ddd;
+		}
+		
+		#chatLog {
+		    height: 700px;
+		    overflow-y: auto;
+		    padding: 10px;
+		}
+		
+		.myMsg {
+		    text-align: right;
+		}
+		
+		.anotherMsg {
+		    text-align: left;
+		    margin-bottom: 5px;
+		}
+		
+		.msg {
+		    display: inline-block;
+		    border-radius: 15px;
+		    padding: 7px 15px;
+		    margin-bottom: 10px;
+		    margin-top: 5px;
+		
+		}
+		
+		.anotherMsg > .msg {
+		    background-color: #f1f0f0;
+		
+		}
+		
+		.myMsg > .msg {
+		    background-color: #0084FF;
+		    color: #fff;
+		}
+		
+		.anotherName {
+		    font-size: 12px;
+		    display: block;
+		}
+		
+		#chatForm {
+		    display: block;
+		    width: 100%;
+		    height: 50px;
+		    border-top: 2px solid #f0f0f0;
+		}
+		
+		#message {
+		    width: 85%;
+		    height: calc(100% - 1px);
+		    border: none;
+		    padding-bottom: 0;
+		}
+		
+		#message:focus {
+		    outline: none;
+		}
+		
+		#chatForm > button[type=button] {
+		    outline: none;
+		    border: none;
+		    background: none;
+		    color: #0084FF;
+		    font-size: 17px;
+		}
+		
+		#memberWrap{
+		    width: 200px;
+		}
+		
+		#memberList {
+		    border: 1px solid #aaaaaa;
+		    border-radius: 5px;
+		}
+		
+		#memberHeader {
+		    height: 40px;
+		    font-size: 18px;
+		    line-height: 40px;
+		    padding-left: 15px;
+		    border-bottom: 1px solid #f0f0f0;
+		    font-weight: 600;
+		}
+		
+		.memberEl {
+		    border-bottom: 1px solid #f0f0f0;
+		    padding: 10px 20px;
+		    font-size: 14px;
+		}
+		
+		#contentCover{
+		    width: 1280px;
+		    margin: 0 auto;
+		    padding-top: 20px;
+		    display: flex;
+		    justify-content: space-around;
+		}
+		
+		html, body {
+		    width: 100%;
+		    height: 100%;
+		    margin: 0;
+		    padding: 0;
+		}
+		
+		#wrapper::after {
+		    clear: both;
+		    content: '';
+		    display: block;
+		}
+		
+		#userWrap {
+		    display: block;
+		}
+		
+		.btn {
+		    background: #fff;
+		    padding: 7px 40px;
+		    border: 1px solid RGB(0, 126, 243);
+		    color: RGB(0, 126, 243);
+		    font-size: 17px;
+		}
+		
+		form input[type=text], form input[type=password] {
+		    width: 70%;
+		    height: 30px;
+		    padding-left: 15px;
+		    font-size: 17px;
+		    border: 1px solid #aaa;
+		}
+		
+		button[type=button],
+		input[type=submit],
+		button {
+		    cursor: pointer;
+		}
+		
+		nav{
+		    width: 100%;
+		    min-width: 1280px;
+		    height: 50px;
+		    background: #0084FF;
+		    color: #fff;
+		    padding: 0px 20px;
+		    box-sizing: border-box;
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    font-size: 17px;
+		}
+		
+		#logoutBtn{
+		    cursor: pointer;
+		}
+		
+		#menuList {
+		    float: left;
+		    width: 200px;
+		    border: 1px solid #0084FF;
+		    border-radius: 5px;
+		    margin: 20px;
+		}
+		
+		#menuHeader {
+		    background-color: #0084FF;
+		    color: #fff;
+		    height: 40px;
+		    font-size: 18px;
+		    line-height: 40px;
+		    text-align: center;
+		    border-radius: 5px;
+		}
+		
+		.menuBtn {
+		    text-align: center;
+		    border-bottom: 1px solid #f0f0f0;
+		    padding: 10px 0px;
+		}
+</style>
 </head>
 <body>
-    <div id="message"></div>
-    <script>
-  //À¥¼ÒÄÏ »ı¼º(·Î±×ÀÎ, ·Î±×¾Æ¿ô ÆäÀÌÁö Á¦¿Ü)
-	var socket = function(){
-		var serverIp = window.location.hostname;
+	<div id="contentWrap">
+	    <nav>
+			<span id="nav-header">
+	            chat App
+	        </span>
+	    </nav>
+	    <div id="contentCover">
+	        <div id="chatWrap">
+	            <div id="chatHeader">Everyone</div>
+	            <div id="chatLog">
+	                
+	            </div>
+	            <div id="chatForm">
+	                <input type="text" id="message" placeholder="ë©”ì‹œì§€ë¥¼ ì…ë ¥í•˜ì„¸ìš”" onkeyup="checkEnter(event);">
+	                <button type="button" onclick="sendMessage();">ë³´ë‚´ê¸°</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 
-		ws = new WebSocket("ws://" + serverIp + ":8080/websocket");
+<script src="/resources/js/jquery-3.1.1.js"></script>
+<script>
+  var start = function() {
+	  var socket = new WebSocket("ws://13.231.162.124:8081/websocket");
 		
-		/**
-	    * À¥¼ÒÄÏ »ç¿ëÀÚ ¿¬°á ¼º¸³ÇÏ´Â °æ¿ì È£Ãâ
-	    */
-	    ws.onopen = function(message) {
-			console.log("connect success");
-	    };
-	    
-		/**
-	     * À¥¼ÒÄÏ ¸Ş½ÃÁö(From Server) ¼ö½ÅÇÏ´Â °æ¿ì È£Ãâ
-	     */
-	     ws.onmessage = function(message) {
-		     var str = '';
-		     
+		socket.onopen = function(event) { // ì—°ê²°ì´ ì„±ê³µí•œ ê²½ìš°
+		  console.log('WebSocket ì—°ê²°ì´ ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.');
+		}
+		
+		socket.onmessage = function(event) { // ì„œë²„ì—ì„œ ë©”ì‹œì§€ë¥¼ ë°›ì€ ê²½ìš°
+			var str = '';
 		     str = '<div class="anotherMsg">';
-		     str += '<span class="msg">'+ message.data + '</span>';
+		     str += '<span class="msg">'+ event.data + '</span>';
 		     str += '</div>';
-		     
 		     $("#chatLog").append(str);
-	    };
+		}
+  }();
+</script>
 
-	    /**
-	     * À¥¼ÒÄÏ »ç¿ëÀÚ ¿¬°á ÇØÁ¦ÇÏ´Â °æ¿ì È£Ãâ
-	     */
-	     ws.onclose = function(message) {
-	   	    console.log("Server is disconnected.");
-	   	 };
-
-	    /**
-	     * À¥¼ÒÄÏ ¿¡·¯ ¹ß»ıÇÏ´Â °æ¿ì È£Ãâ
-	     */
-	     ws.onerror = function(message) {
-	    	commonAlert("Error!");
-	    };
-	}();
-    </script>
 </body>
 </html>
