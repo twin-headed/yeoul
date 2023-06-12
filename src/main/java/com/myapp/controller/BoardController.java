@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.myapp.service.BoardService;
+import com.myapp.vo.BoardEntity;
 import com.myapp.vo.BoardVO;
 import com.samskivert.mustache.Mustache;
 
@@ -34,13 +40,20 @@ public class BoardController {
 	private BoardService service;
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	public Map<String, Object> list(@RequestBody BoardVO vo, Model model) {
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello"); 
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
 		//logger.info("/list 진입");
 		
-		List<BoardVO> list = service.selectBoardlist(vo);
-		int totalCnt = service.selectBoardListCnt(vo); // 총게시글수
+		List<BoardEntity> list = service.selectBoardlist();
+		int totalCnt = list.size(); // 총게시글수
 		int page = vo.getPageNum(); // 현재 요청한 페이지
 		int pageCnt = 10;		// 블럭의 페이지개수
 		int cntPerPage = 12;	// 페이지당 게시글수
