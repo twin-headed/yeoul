@@ -43,7 +43,7 @@ public class BoardController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public Map<String, Object> list(@RequestBody BoardVO vo, Model model) {
+	public Map<String, Object> list(@RequestBody BoardVO vo) {
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello"); 
 		EntityManager em = emf.createEntityManager();
@@ -52,7 +52,8 @@ public class BoardController {
 		
 		//logger.info("/list 진입");
 		
-		List<BoardEntity> list = service.selectBoardlist();
+
+		List<BoardEntity> list = em.createQuery("select b from BoardEntity b", BoardEntity.class).setFirstResult(vo.getPageNum() * 12).setMaxResults(12).getResultList();
 		int totalCnt = list.size(); // 총게시글수
 		int page = vo.getPageNum(); // 현재 요청한 페이지
 		int pageCnt = 10;		// 블럭의 페이지개수

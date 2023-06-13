@@ -193,20 +193,17 @@ select, option {
 			</div>
 		</div>
 		<div style="text-align: center;">
-				<구버전 프리 바람의나라-Renewal By Yeoulserver>
-			</div>
+				&lt;구버전 프리 바람의나라-Renewal By Yeoulserver&rt;
+		</div>
 	</div>
 	<script>
 		$(document).ready(function(){
 			selectBoardList(1);
 		})
-		
 		function selectBoardList(page) {
-			
 			var data = {
 					pageNum : page? page : 1,
 			}
-			
 			if(!$("#input").val()) {
 				
 			}else {
@@ -221,8 +218,6 @@ select, option {
 					break;
 				}	
 			}
-			
-			
 			$.ajax({
 				type : "POST",
 				data : JSON.stringify(data),
@@ -232,7 +227,6 @@ select, option {
 					console.log(response);
 					$("#list").empty();
 					$("#paging").empty();
-					
 					/*
 					$.each(response.list, function(index, item) {
 						var listHtml = '<tr>'
@@ -246,9 +240,7 @@ select, option {
 						$("#list").append(listHtml);
 					});	
 					*/
-					
 					if(response.list.length > 0) {
-						
 						for(var i=0; i<response.list.length; i++) {
 							var listHtml = '<tr>'
 							listHtml = listHtml + '<td>' + response.list[i].rowNum + '</td>'
@@ -259,24 +251,18 @@ select, option {
 							listHtml = listHtml + '</tr>';
 							$("#list").append(listHtml);
 						}
-						
 						for(var i=response.startPage; i<=response.endPage; i++) {
-							
 							if(i == response.pageNum) {
 								$("#paging").append('<li class="page-item active"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+i+')">'+i+'</a></li>');
 							}else {
-								$("#paging").append('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+i+')">'+i+'</a></li>');	
+								$("#paging").append('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(' + i + ')">' + i + '</a></li>');
 							}
-							
-							
 							// 마지막반복시 페이징처리추가
 							if(i == response.endPage) {
-								
 								if(response.pageNum > 10) {
 									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ (response.startPage-1) +')">이전</a></li>').prependTo("#paging");
 									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList(1)">&lt;&lt;</a></li>').prependTo("#paging");
 								}
-								
 								if(response.totalPage > 10) {
 									if((parseInt(response.endBlock*10) > response.pageNum) && (response.pageNum > parseInt(response.endBlock*10) - 10)) {
 										
@@ -288,9 +274,7 @@ select, option {
 								}
 							}
 						}
-						
 						$("#paging").append('<li class="page-item" style="margin-left:1%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
-						
 					}else {
 						var listHtml = '<tr>'
 						listHtml = listHtml + '<td colspan="5" style="padding: 50px 0 60px 0;">게시물이 없습니다.</td>'
@@ -298,10 +282,6 @@ select, option {
 						$("#list").append(listHtml);
 						$("#paging").append('<li class="page-item" style="margin-left:80%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
 					}
-					
-					
-					
-					
 					/*
 					if(response.totalBlock < 11) { // 전체 블록이 10개 이하
 						
@@ -326,11 +306,9 @@ select, option {
 				}
 			});
 		}
-	
 		$(".logo").on("click",function(){
 			location.href="/";			
 		});
-		
 	</script>
 </body>
 </html>
