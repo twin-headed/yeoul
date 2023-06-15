@@ -13,6 +13,9 @@ import javax.persistence.Persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +35,6 @@ import com.samskivert.mustache.Mustache;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
-	
 	@Autowired
 	private Mustache.Compiler mustacheCompiler;
 	
@@ -44,60 +46,23 @@ public class BoardController {
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	public Map<String, Object> list(@RequestBody BoardVO vo) {
-		
+		// JPA트랜잭션처리
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello"); 
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		
-		//logger.info("/list 진입");
-		
-
-		List<BoardEntity> list = em.createQuery("select b from BoardEntity b", BoardEntity.class).setFirstResult(vo.getPageNum() * 12).setMaxResults(12).getResultList();
-		int totalCnt = list.size(); // 총게시글수
-		int page = vo.getPageNum(); // 현재 요청한 페이지
-		int pageCnt = 10;		// 블럭의 페이지개수
-		int cntPerPage = 12;	// 페이지당 게시글수
-		int totalPage;	// 총 페이지수
-		int startPage;	// 해당블럭의 첫페이지
-		int endPage;		// 해당블럭의 마지막페이지
-		
-		totalPage = totalCnt / cntPerPage;
-		if(totalCnt % cntPerPage > 0) {
-			totalPage++;
-		}
-		if(page > totalPage) {
-			page = totalPage;
-		}
-		
-		startPage = ((page-1) / pageCnt) * 10 + 1;
-		endPage = startPage + pageCnt - 1;
-		
-		if (endPage > totalPage) {
-		    endPage = totalPage;
-		}
-		
-		int endBlock = totalPage%pageCnt > 0? totalPage/pageCnt + 1 : totalPage/pageCnt;	// 마지막 페이지블록
-		
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
+		// PageRequest 구현체의 of 메서드를 사용해서 pageable 인터페이스 구현, 실제페이지에서 1을 뺀값과 페이지당 게시글수 12개를 넣는다.
+		Pageable pageable = PageRequest.of(vo.getPageNum() - 1, 12);
+		// Page 자료형으로 게시글 조회
+		Page<BoardEntity> page = service.selectBoardlist(pageable);
+		// List 자료형으로 변환
+		List<BoardEntity> list = page.getContent();
+		Map<String, Object> map = new HashMap<>();
+		map.put("pageNum", pageable.getPageNumber());
+		map.put("startPage", ((pageable.getPageNumber()-1) / 10) * 10 + 1); // 요청한페이지 -1 / 블럭당 페이지 * 10 + 1
+		map.put("endPage", (((pageable.getPageNumber()-1) / 10) * 10 + 1) + 9); // 시작페이지 + 블럭당 페이지 - 1
+		map.put("totalPage", page.getTotalPages());
 		map.put("list", list);
-		map.put("totalCnt", totalCnt);
-		map.put("totalPage", totalPage);
-		map.put("startPage", startPage);
-		map.put("endPage", endPage);
-		map.put("pageNum", page);
-		map.put("endBlock", endBlock);
-		/*
-		StringWriter writer = new StringWriter();
-		Map<String, Object> context = new HashMap<>();
-		context.put("list", list);
-		mustacheCompiler.compile("classpath:static/boardTemplate.html").execute(context,writer);
-		String html = writer.toString();
-		Map<String, Object> data = new HashMap<>();
-		data.put("html", html);
-		*/
 		return map;
 	}
 	

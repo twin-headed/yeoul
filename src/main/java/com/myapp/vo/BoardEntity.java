@@ -1,9 +1,6 @@
 package com.myapp.vo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +11,7 @@ import lombok.Setter;
 @Table(name = "board")
 public class BoardEntity {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Long seq;
 

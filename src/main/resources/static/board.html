@@ -224,25 +224,17 @@ select, option {
 				contentType: 'application/json',
 				url : "/board/list",
 				success : function(response) {
+					// 로그출력
 					console.log(response);
+
+					// 결과를 뿌리기전에 리스트와 블럭 초기화
 					$("#list").empty();
 					$("#paging").empty();
-					/*
-					$.each(response.list, function(index, item) {
-						var listHtml = '<tr>'
-						$.each (function() {
-							listHtml = listHtml + '<td>' + item.seq + '</td>'
-							listHtml = listHtml + '<td>' + item.content + '</td>'
-							listHtml = listHtml + '<td>' + item.id + '</td>'
-							listHtml = listHtml + '<td>' + item.registDate + '</td>'
-						}); 
-						listHtml = listHtml + '</tr>';
-						$("#list").append(listHtml);
-					});	
-					*/
+					var listHtml;
 					if(response.list.length > 0) {
+						// 게시글 출력
 						for(var i=0; i<response.list.length; i++) {
-							var listHtml = '<tr>'
+							listHtml = '<tr>'
 							listHtml = listHtml + '<td>' + response.list[i].rowNum + '</td>'
 							listHtml = listHtml + '<td>' + '<a href="/board/view/'+response.list[i].seq+'">' + response.list[i].title + '</td>'
 							listHtml = listHtml + '<td>' + response.list[i].id + '</td>'
@@ -251,32 +243,28 @@ select, option {
 							listHtml = listHtml + '</tr>';
 							$("#list").append(listHtml);
 						}
-						for(var i=response.startPage; i<=response.endPage; i++) {
-							if(i == response.pageNum) {
+						// 페이징 출력
+						for(var j=response.startPage; j<=response.endPage; j++) {
+							if(j == response.pageNum) {
 								$("#paging").append('<li class="page-item active"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+i+')">'+i+'</a></li>');
 							}else {
 								$("#paging").append('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(' + i + ')">' + i + '</a></li>');
 							}
 							// 마지막반복시 페이징처리추가
-							if(i == response.endPage) {
+							if(j == response.endPage) {
 								if(response.pageNum > 10) {
 									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ (response.startPage-1) +')">이전</a></li>').prependTo("#paging");
 									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList(1)">&lt;&lt;</a></li>').prependTo("#paging");
 								}
-								if(response.totalPage > 10) {
-									if((parseInt(response.endBlock*10) > response.pageNum) && (response.pageNum > parseInt(response.endBlock*10) - 10)) {
-										
-									}else {
-										$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ (response.startPage+10) +')">다음</a></li>').appendTo("#paging");
-										$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ response.totalPage +')">&gt;&gt;</a></li>').appendTo("#paging");
-									}
-								
+								if(response.totalPage > response.endPage) {
+									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ (response.startPage+10) +')">다음</a></li>').appendTo("#paging");
+									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ response.totalPage +')">&gt;&gt;</a></li>').appendTo("#paging");
 								}
 							}
 						}
 						$("#paging").append('<li class="page-item" style="margin-left:1%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
 					}else {
-						var listHtml = '<tr>'
+						listHtml = '<tr>'
 						listHtml = listHtml + '<td colspan="5" style="padding: 50px 0 60px 0;">게시물이 없습니다.</td>'
 						listHtml = listHtml + '</tr>';
 						$("#list").append(listHtml);

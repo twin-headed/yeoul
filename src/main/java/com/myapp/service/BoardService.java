@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +25,8 @@ public class BoardService {
 	@Autowired
     private SqlSession sqlQuery; 
 	
-	public List<BoardEntity> selectBoardlist () {
-		
-		return boardRepo.findAll();
-		/*
-		vo.setOffset(vo.getPagePerNum()*(vo.getPageNum()-1));
-		
-		List<BoardVO> list = sqlQuery.selectList("selectBoardList",  vo);
-		
-		return list;
-		*/
+	public Page<BoardEntity> selectBoardlist (Pageable pageable) {
+		return boardRepo.findAll(pageable);
 	}
 	
 	public int selectBoardListCnt(BoardVO vo) {
