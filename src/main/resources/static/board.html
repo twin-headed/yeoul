@@ -159,20 +159,16 @@ select, option {
 							</tr>
 						</thead>
 						<tbody id="list">
-							{{#list}}
-								<tr>
-								<td>{{seq}}</td>
-								<td><a href="/board/view/{{seq}}">{{title}}</a></td>
-								<td>{{id}}</td>
-								<td>{{registDate}}</td>
-								<td>{{deleteYn}}</td>
-								</tr>
-							{{/list}}
+							<tr th:each="item : ${map.list}}">
+								<td th:text="${item.seq}">{{seq}}</td>
+								<td><a th:href="@{/board/view/{seq}(seq=${item.seq})}" th:text="${item.title}">{{title}}</a></td>
+								<td th:text="${item.id}"></td>
+								<td th:text="${item.registDate}"></td>
+								<td th:text="${item.deleteYn}"></td>
+							</tr>
 						</tbody>
 					</table>
-					
 					<br>
-					
 					<div>
 						<ul class="pagination justify-content-center" id="paging">
 						  </ul>
@@ -228,11 +224,12 @@ select, option {
 					console.log(response);
 
 					// 결과를 뿌리기전에 리스트와 블럭 초기화
-					$("#list").empty();
+					//$("#list").empty();
 					$("#paging").empty();
 					var listHtml;
 					if(response.list.length > 0) {
-						// 게시글 출력
+						// 게시글 출력 -> 타임리프로 표기
+						/*
 						for(var i=0; i<response.list.length; i++) {
 							listHtml = '<tr>'
 							listHtml = listHtml + '<td>' + response.list[i].rowNum + '</td>'
@@ -243,22 +240,23 @@ select, option {
 							listHtml = listHtml + '</tr>';
 							$("#list").append(listHtml);
 						}
+						*/
 						// 페이징 출력
 						for(var j=response.startPage; j<=response.endPage; j++) {
 							if(j == response.pageNum) {
-								$("#paging").append('<li class="page-item active"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+i+')">'+i+'</a></li>');
+								$("#paging").append('<li class="page-item active"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ j +')">'+ j +'</a></li>');
 							}else {
-								$("#paging").append('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(' + i + ')">' + i + '</a></li>');
+								$("#paging").append('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(' + j + ')">' + j + '</a></li>');
 							}
 							// 마지막반복시 페이징처리추가
 							if(j == response.endPage) {
 								if(response.pageNum > 10) {
-									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ (response.startPage-1) +')">이전</a></li>').prependTo("#paging");
-									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList(1)">&lt;&lt;</a></li>').prependTo("#paging");
+									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ (response.startPage-1) +')">이전</a></li>').prependTo("#paging");
+									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(1)">&lt;&lt;</a></li>').prependTo("#paging");
 								}
 								if(response.totalPage > response.endPage) {
-									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ (response.startPage+10) +')">다음</a></li>').appendTo("#paging");
-									$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+ response.totalPage +')">&gt;&gt;</a></li>').appendTo("#paging");
+									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ (response.startPage+10) +')">다음</a></li>').appendTo("#paging");
+									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ response.totalPage +')">&gt;&gt;</a></li>').appendTo("#paging");
 								}
 							}
 						}
