@@ -216,12 +216,12 @@ textarea#wr_content {
 				</div>
 				<div style="width:100%;">
 					<header>
-        				<h1 id="bo_v_title">{{vo.title}}</h1>
+        				<h1 id="bo_v_title" th:text="${vo.title}"></h1>
 					</header>
 					<section id="bo_v_info">
 						<div class="fl">
 							<span class="bo_v_user">
-								<span class="sound_only" style="margin-left:10px;">작성자 : {{vo.id}}</span>
+								<span class="sound_only" style="margin-left:10px;">작성자 : </span><span th:text="${vo.id}"></span>
 							</span>
 						</div>
 						<div class="fr">
@@ -230,8 +230,7 @@ textarea#wr_content {
 							<span class="bo_v_comment"> 댓글 <strong>1</strong></span>
 						</div>
 					</section>
-					<div style="height:fit-content; padding:2%; min-height:419px; position: relative;">
-						{{vo.content}}
+					<div style="height:fit-content; padding:2%; min-height:419px; position: relative;" th:utext="${vo.content}">
 						<div style="position: absolute; bottom: 0; right: 0;">
 							<button type="button" class="btn btn-dark btn-sm" id="save" style="margin-bottom: 5px; margin-right: 5px;">수정</button>
 							<button type="button" class="btn btn-danger btn-sm" id="delete" style="margin-bottom: 5px; margin-right: 5px;">삭제</button>
