@@ -16,23 +16,18 @@ import com.myapp.vo.BoardVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Repository
 @RequiredArgsConstructor
 public class BoardService {
-	
-	private final BoardRepository boardRepo;
 	
 	@Autowired
     private SqlSession sqlQuery; 
 	
-	public Page<BoardEntity> selectBoardlist (Pageable pageable) {
-		return boardRepo.findAll(pageable);
+	public List<BoardVO> selectBoardlist (BoardVO vo) {
+		return sqlQuery.selectList("selectBoardList", vo);
 	}
 	
 	public int selectBoardListCnt(BoardVO vo) {
-		
 		return sqlQuery.selectOne("selectBoardListCnt", vo);
-		
 	}
 
 	public void insertBoard(BoardVO vo) {
@@ -42,9 +37,7 @@ public class BoardService {
 	}
 
 	public BoardVO selectBoardOne(int seq) {
-		
 		BoardVO vo = sqlQuery.selectOne("selectBoardOne", seq);
-		
 		return vo;
 	}
 }

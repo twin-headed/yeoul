@@ -12,7 +12,7 @@
     <typeAliases>
          <typeAlias alias="hashMap" type="java.util.HashMap" />
          <typeAlias alias="map" type="java.util.Map" />
-         <typeAlias type="com.myapp.vo.BoardVO" alias="boardVO"/>
+         <typeAlias type="com.myapp.vo.BoardVO" alias="BoardVO"/>
     </typeAliases>    
   
 </configuration>

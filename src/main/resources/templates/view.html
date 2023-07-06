@@ -230,8 +230,12 @@ textarea#wr_content {
 							<span class="bo_v_comment"> 댓글 <strong>1</strong></span>
 						</div>
 					</section>
-					<div style="height:fit-content; padding:2%; min-height:419px;">
-						{{{vo.content}}}
+					<div style="height:fit-content; padding:2%; min-height:419px; position: relative;">
+						{{vo.content}}
+						<div style="position: absolute; bottom: 0; right: 0;">
+							<button type="button" class="btn btn-dark btn-sm" id="save" style="margin-bottom: 5px; margin-right: 5px;">수정</button>
+							<button type="button" class="btn btn-danger btn-sm" id="delete" style="margin-bottom: 5px; margin-right: 5px;">삭제</button>
+						</div>
 					</div>
 					<section id="bo_vc">
 						<div class="bo_vc_top">
@@ -296,9 +300,7 @@ textarea#wr_content {
 				</div>
 			</div>
 		</div>
-		<div style="text-align: center;">
-				<구버전 프리 바람의나라-Renewal By Yeoulserver>
-			</div>
+		<div style="text-align: center;">&lt구버전 프리 바람의나라-Renewal By Yeoulserver&gt</div>
 	</div>
 	<script>
 		$(document).ready(function() {
@@ -340,16 +342,13 @@ textarea#wr_content {
 		});
 		
 		$("#save").on("click",function(){
-			
-				if(!confirm("저장ㄱ?")) {
+				if(!confirm("저장하시겠습니까?")) {
 					return false;	
 				}
-				
 				var data = {
 					title: $("#title").val(),
 					content: $(".summernote").val()
 				}
-				
 				$.ajax({
 					data : JSON.stringify(data),
 					type : "POST",
@@ -362,9 +361,55 @@ textarea#wr_content {
 		          	            alert("저장실패!");
 		       	     }
 				});
-				
-				
 		});
+
+		$("#modify").on("click",function(){
+			if(!confirm("수정하시겠습니까?")) {
+				return false;
+			}
+			var data = {
+				title: $("#title").val(),
+				content: $(".summernote").val()
+			}
+			$.ajax({
+				data : JSON.stringify(data),
+				type : "PUT",
+				url : "/board/modify",
+				contentType: 'application/json; charset=utf-8',
+				success : function(response) {
+					alert("수정성공!");
+					location.reload();
+				}
+				,error:function(request,status,error, data){
+					alert("수정실패!");
+				}
+			});
+		});
+
+		$("#delete").on("click",function(){
+			if(!confirm("삭제하시겠습니까?")) {
+				return false;
+			}
+			var data = {
+				title: $("#title").val(),
+				content: $(".summernote").val()
+			}
+			$.ajax({
+				data : JSON.stringify(data),
+				type : "DELETE",
+				url : "/board/delete",
+				contentType: 'application/json; charset=utf-8',
+				success : function(response) {
+					alert("삭제성공!");
+					location.reload();
+				}
+				,error:function(request,status,error, data){
+					alert("삭제실패!");
+				}
+			});
+		});
+
+
 		
 	</script>
 </body>

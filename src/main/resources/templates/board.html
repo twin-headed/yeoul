@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <link rel="stylesheet" href="/resources/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" media="screen, projection"
@@ -140,7 +140,8 @@ select, option {
 						by 아기사자
 					</h2>
 				</div>
-				<div class="container" style="width: 75%; float:left; margin-right:0%; padding:0px; background-color:white">
+
+				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white">
 					<table class="table table-hover fz_board">
 						<colgroup>
 					        <col width="10%">
@@ -159,7 +160,10 @@ select, option {
 							</tr>
 						</thead>
 						<tbody id="list">
-							<tr th:each="item : ${map.list}">
+						</tbody>
+						<!--
+						<tbody id="list" th:if="${list != null}">
+							<tr th:each="item : ${list}">
 								<td th:text="${item.seq}">{{seq}}</td>
 								<td><a th:href="@{/board/view/{seq}(seq=${item.seq})}" th:text="${item.title}">{{title}}</a></td>
 								<td th:text="${item.id}"></td>
@@ -167,6 +171,7 @@ select, option {
 								<td th:text="${item.deleteYn}"></td>
 							</tr>
 						</tbody>
+						-->
 					</table>
 					<br>
 					<div>
@@ -178,7 +183,7 @@ select, option {
 						<select id="select" style="margin-left:25%; height:24.5px; width:70px;">
 						  <option value="1" selected>제목</option>
 						  <option value="2">작성자</option>
-						  <option value="3">내용</option>
+						  <option value="3">내용</option>ㅁㅈㄷㄹ
 						  <option value="4">제목+내용</option>
 						</select>
 						<input id="input" type="text" size="15" maxlength="20" style="justify-content: center !important;">
@@ -187,8 +192,9 @@ select, option {
 				</div>
 			</div>
 		</div>
+
 		<div style="text-align: center;">
-				&lt;구버전 프리 바람의나라-Renewal By Yeoulserver&rt;
+				&lt;구버전 프리 바람의나라-Renewal By Yeoulserver>;
 		</div>
 	</div>
 	<script>
@@ -223,12 +229,12 @@ select, option {
 					console.log(response);
 
 					// 결과를 뿌리기전에 리스트와 블럭 초기화
-					//$("#list").empty();
+					$("#list").empty();
 					$("#paging").empty();
 					var listHtml;
 					if(response.list.length > 0) {
-						// 게시글 출력 -> 타임리프로 표기
-						/*
+
+						// 게시글 출력 -> 타임리프로 표기 x
 						for(var i=0; i<response.list.length; i++) {
 							listHtml = '<tr>'
 							listHtml = listHtml + '<td>' + response.list[i].rowNum + '</td>'
@@ -239,7 +245,6 @@ select, option {
 							listHtml = listHtml + '</tr>';
 							$("#list").append(listHtml);
 						}
-						*/
 						// 페이징 출력
 						for(var j=response.startPage; j<=response.endPage; j++) {
 							if(j == response.pageNum) {

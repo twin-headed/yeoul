@@ -4,7 +4,7 @@
 
 <mapper namespace="com.myapp.service.BoardService">
 
-    <select id="selectBoardList" parameterType="com.myapp.vo.BoardVO" resultType="com.myapp.vo.BoardVO">
+    <select id="selectBoardList" parameterType="BoardVO" resultType="BoardVO">
         select seq
         , title
         , content
@@ -33,7 +33,7 @@
         	limit #{pagePerNum} offset #{offset}
     </select>
       
-    <select id="selectBoardListCnt" parameterType="com.myapp.vo.BoardVO" resultType="int">
+    <select id="selectBoardListCnt" parameterType="BoardVO" resultType="int">
     	select 
     		count(*)
     	from board
@@ -54,13 +54,13 @@
         </choose>
     </select>
     
-    <select id="selectBoardOne" resultType="com.myapp.vo.BoardVO" parameterType="int">
+    <select id="selectBoardOne" resultType="BoardVO" parameterType="int">
     	select * 
     		from board 
     	where seq = #{seq}
     </select>
     
-    <insert id="insertBoard" parameterType="com.myapp.vo.BoardVO">
+    <insert id="insertBoard" parameterType="BoardVO">
     	insert into board (
     			title,content,id,registDate,modifyDate,deleteYn
     		) 
@@ -73,7 +73,7 @@
     	update board set deleteYn = 'Y' where seq = #{seq}
     </update>  
     
-    <update id="updateBoard" parameterType="com.myapp.vo.BoardVO">
+    <update id="updateBoard" parameterType="BoardVO">
     	update board set
     		title = ${title}
     		,content = ${content}
