@@ -208,13 +208,14 @@ textarea#wr_content {
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
-						<li><span class="hlavny_"><a href="/board/list">사용중지게시판
+						<li><span class="hlavny_"><a href="/board/list">공략게시판
 							</a></span></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li class="active"></li>
 					</ul>
 				</div>
 				<div style="width:100%;">
+					<input type="hidden" id="seq" value="" />
 					<header>
         				<h1 id="bo_v_title" th:text="${vo.title}"></h1>
 					</header>
@@ -225,23 +226,20 @@ textarea#wr_content {
 							</span>
 						</div>
 						<div class="fr">
-							<span class="bo_v_date"><span class="sound_only">작성일</span><strong>22-10-18 12:06</strong></span> <span class="bar">|</span>
-							<span class="bo_v_hit"> 조회 <strong>98</strong></span> <span class="bar">|</span>
-							<span class="bo_v_comment"> 댓글 <strong>1</strong></span>
+							<span class="bo_v_date"><span class="sound_only">작성일 </span><strong th:text="${vo.registDate}"></strong></span> <span class="bar">|</span>
+							<span class="bo_v_hit"> 조회 <strong th:text="${vo.viewCount}"></strong></span> <span class="bar">|</span>
+							<span class="bo_v_comment"> 댓글 <strong th:text="${co.size()}"></strong></span>
 						</div>
 					</section>
-					<div style="height:fit-content; padding:2%; min-height:419px; position: relative;" th:utext="${vo.content}">
-						<div style="position: absolute; bottom: 0; right: 0;">
-							<button type="button" class="btn btn-dark btn-sm" id="save" style="margin-bottom: 5px; margin-right: 5px;">수정</button>
-							<button type="button" class="btn btn-danger btn-sm" id="delete" style="margin-bottom: 5px; margin-right: 5px;">삭제</button>
-						</div>
+					<div id="utext" style="height:fit-content; padding:2%; min-height:419px; position: relative;" th:utext="${vo.content}">
+
 					</div>
 					<section id="bo_vc">
 						<div class="bo_vc_top">
-							<h2 style="margin-left:10px;">댓글 목록 <em>3</em></h2>
+							<h2 style="margin-left:10px;">댓글 목록 <em th:text="${co.size()}"></em></h2>
 						</div>
-						
-						<article>
+
+						<article th:each="item : ${co}">
 							<header style="z-index:4">
 								<span class="bo_vc_symbol_target" id="c_5124"></span>
 							<div class="f_wrap">
@@ -251,68 +249,54 @@ textarea#wr_content {
 							</div>
 							</header>
 							
-							<div class="bo_vc_content"><br>클라이언트만 있으면 맵 열수 있습니다 버전은 좀 낮아야해요 지금 본섭 클라이언트로 사용하시면 안열립니다<br>그리고 너무 높은 클라이언트 버전에서 만들어진 맵을 열면 안보이거나 튕길 수도 있슴다</div>
+							<div class="bo_vc_content"><br th:text="${item.content}"></div>
 								<footer>
 						            <ul class="bo_vc_act">
 						                <a href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>                                            
 						             </ul>
 						        </footer>
 						</article>
-						<article>
-							<header style="z-index:4">
-								<span class="bo_vc_symbol_target" id="c_5124"></span>
-							<div class="f_wrap">
-								<div class="fl">
-									<span class="bo_vc_hdinfo"> <span id="commenter" style="margin-right:10px;">아기사자</span> <time datetime="2022-11-07T14:22:00+09:00">22-11-07 14:22</time></span>
-								</div>
-							</div>
-							</header>
-							
-							<div class="bo_vc_content"><br>클라이언트만 있으면 맵 열수 있습니다 버전은 좀 낮아야해요 지금 본섭 클라이언트로 사용하시면 안열립니다<br>그리고 너무 높은 클라이언트 버전에서 만들어진 맵을 열면 안보이거나 튕길 수도 있슴다</div>
-								<footer>
-						            <ul class="bo_vc_act">
-						                <a href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>                                            
-						             </ul>
-						        </footer>
-						</article>
-						
-						
-						<div style="padding:9 9 30 9px; background:#fafafa; border:1px solid #e3e3e3;">
-							<div class="write_body">
-								<div class="no_editor">
-								<span class="placeholder placeholder_textarea">
-									<textarea name="wr_content" id="wr_content" class="bo_vc_wr_content"></textarea>
-								</span>
-								</div>
-								<div class="f_wrap">
-									<div class="fl">
-										<span class="checkbox check-box"><input type="checkbox" id="wr_secret" name="wr_secret" value="secret"> <label for="wr_secret" class="wr_secret_label" style="font-size: 11px;">비밀 댓글</label></span>
+						<aside id="bo_vc_w">
+							<div id="comment_form" class="comment_form">
+								<div style="height:150px" class="write_body">
+									<div class="no_editor">
+										<span class="placeholder placeholder_textarea" style="background-color: #fafafa;">
+											<textarea name="content" id="wr_content" class="bo_vc_wr_content"></textarea>
+										</span>
 									</div>
-									<div class="fr">
-										<input type="image" src="https://www.baraminside.com/skin/board/fz_basic_pc/img/btn_submit_comment.gif" alt="댓글등록" title="댓글등록">
+									<div class="f_wrap">
+										<div style="padding-right:0px;" class="fr">
+											<input id="comment" style="width:auto; border:none; float:right; margin-top:0px; background-color: #fafafa;" type="image" src="/resources/img/btn_submit_comment.gif" alt="댓글등록" title="댓글등록">
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-				
+						</aside>
 					</section>
 				</div>
 			</div>
 		</div>
 		<div style="text-align: center;">&lt구버전 프리 바람의나라-Renewal By Yeoulserver&gt</div>
 	</div>
-	<script>
+	<script th:inline="javascript">
+
+		let seq = /*[[${vo.seq}]]*/ '';
+		let title = /*[[${vo.title}]]*/ '';
+		let content = /*[[${vo.content}]]*/ '';
+
+		console.log("seq : " + seq);
+
 		$(document).ready(function() {
 			  $('.summernote').summernote({
 				  height: 350,
 				  lang: "ko-KR",
-		            callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+					callbacks: {	//여기 부분이 이미지를 첨부하는 부분
 						onImageUpload : function(files) {
 							uploadSummernoteImageFile(files[0],this);
 						}
 					}
 			  });
-		});
+		})
 		
 		function uploadSummernoteImageFile(file, editor) {
 			var data = new FormData();
@@ -334,79 +318,87 @@ textarea#wr_content {
 	       	        }
 			});
 		}
-	
-		
+
 		$(".logo").on("click",function(){
 			location.href="/";			
 		});
-		
-		$("#save").on("click",function(){
-				if(!confirm("저장하시겠습니까?")) {
-					return false;	
-				}
-				var data = {
-					title: $("#title").val(),
-					content: $(".summernote").val()
-				}
-				$.ajax({
-					data : JSON.stringify(data),
-					type : "POST",
-					url : "/board/insert",
-					contentType: 'application/json; charset=utf-8',
-					success : function(response) {
-						            alert("저장!");							
-					 }
-					,error:function(request,status,error, data){
-		          	            alert("저장실패!");
-		       	     }
-				});
-		});
+
+		/* 조회자가 해당글의 주인일시 추가하는 로직필요 */
+		$('#utext').after(
+				'<div style="text-align:right">' +
+				'<button id="modify" type="button" class="btn btn-dark btn-sm" id="modify" style="margin-bottom: 5px; margin-right: 5px;">수정</button>' +
+				'<button id="delete" type="button" class="btn btn-danger btn-sm" id="delete" style="margin-bottom: 5px; margin-right: 5px;">삭제</button>' +
+				'</div>'
+		);
 
 		$("#modify").on("click",function(){
 			if(!confirm("수정하시겠습니까?")) {
 				return false;
 			}
 			var data = {
-				title: $("#title").val(),
-				content: $(".summernote").val()
+				seq : seq,
+				title : title,
+				content : content
 			}
-			$.ajax({
-				data : JSON.stringify(data),
-				type : "PUT",
-				url : "/board/modify",
-				contentType: 'application/json; charset=utf-8',
-				success : function(response) {
-					alert("수정성공!");
-					location.reload();
-				}
-				,error:function(request,status,error, data){
-					alert("수정실패!");
-				}
-			});
+			var form = document.createElement("form");
+			form.method = "POST";
+			form.action = "/board/modify"; // 실제 요청을 처리할 경로
+			// JSON 데이터를 문자열로 변환하여 input 요소에 담음
+			var jsonDataInput = document.createElement("input");
+			jsonDataInput.type = "hidden";
+			jsonDataInput.name = "data";
+			jsonDataInput.value = JSON.stringify(data);
+
+			// form에 input 요소 추가
+			form.appendChild(jsonDataInput);
+			document.body.appendChild(form);
+			form.submit(); // POST 요청 전송
 		});
 
 		$("#delete").on("click",function(){
 			if(!confirm("삭제하시겠습니까?")) {
 				return false;
 			}
-			var data = {
-				title: $("#title").val(),
-				content: $(".summernote").val()
-			}
 			$.ajax({
-				data : JSON.stringify(data),
-				type : "DELETE",
-				url : "/board/delete",
-				contentType: 'application/json; charset=utf-8',
+				type : "GET",
+				url : "/board/delete/"+seq,
 				success : function(response) {
 					alert("삭제성공!");
-					location.reload();
+					location.href = "/board/list";
 				}
 				,error:function(request,status,error, data){
 					alert("삭제실패!");
 				}
 			});
 		});
+
+		$("#comment").on("click", function(){
+			if(!confirm("등록하시겠습니까?")) {
+				return false;
+			}
+			if($.trim($("#wr_content").val()) === '') {
+				alert("내용을 입력해주세요.");
+				return false;
+			}
+			var data = {
+				boardSeq : seq,
+				content : $("#wr_content").val()
+			}
+			$.ajax({
+				type : "POST",
+				url : "/board/comment/write",
+				contentType: 'application/json; charset=utf-8',
+				data : JSON.stringify(data),
+				success : function(response) {
+					location.href = "/board/view/"+seq;
+				}
+				,error:function(request,status,error, data){
+					alert("등록실패");
+				}
+			});
+		});
+
+
 
 
 		

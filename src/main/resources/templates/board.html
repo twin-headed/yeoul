@@ -111,7 +111,7 @@ select, option {
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li><span class="hlavny_"><a
-								href="https://t.me/yeoulbaramchat">채팅방</a></span></li>
+								href="https://t.me/yeoulbaramchat">커뮤니티(단톡방)</a></span></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
@@ -121,7 +121,7 @@ select, option {
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
-						<li><span class="hlavny_"><a href="/board/list">홍보게시판
+						<li><span class="hlavny_"><a href="/board/list">공략게시판
 							</a></span></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li class="active"></li>
@@ -194,7 +194,7 @@ select, option {
 		</div>
 
 		<div style="text-align: center;">
-				&lt;구버전 프리 바람의나라-Renewal By Yeoulserver>;
+				&lt;구버전 프리 바람의나라-Renewal By Yeoulserver>
 		</div>
 	</div>
 	<script>
@@ -241,7 +241,7 @@ select, option {
 							listHtml = listHtml + '<td>' + '<a href="/board/view/'+response.list[i].seq+'">' + response.list[i].title + '</td>'
 							listHtml = listHtml + '<td>' + response.list[i].id + '</td>'
 							listHtml = listHtml + '<td>' + response.list[i].registDate + '</td>'
-							listHtml = listHtml + '<td>' + response.list[i].deleteYn + '</td>'
+							listHtml = listHtml + '<td>' + response.list[i].viewCount + '</td>'
 							listHtml = listHtml + '</tr>';
 							$("#list").append(listHtml);
 						}

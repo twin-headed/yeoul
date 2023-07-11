@@ -1,6 +1,8 @@
 package com.myapp.controller;
 
 import java.io.StringWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.myapp.vo.CommentVO;
+import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.myapp.service.BoardService;
 import com.myapp.vo.BoardEntity;
@@ -35,11 +38,11 @@ import com.samskivert.mustache.Mustache;
  */
 @Controller
 @RequestMapping("/board")
+@RequiredArgsConstructor
 public class BoardController {
 
-	@Autowired
-	private BoardService service;
-	
+	private final BoardService service;
+
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	//최초 진입시
@@ -69,49 +72,70 @@ public class BoardController {
 		map.put("pageNum", pageable.getPageNumber() + 1); // pageable.getPageNumber는 사용자가 인식하는 페이지 + 1값임 따라서 -1을 처리해서 실제 인식값으로 바꿔줌
 		map.put("startPage", startPage);
 		map.put("endPage", endPage);
-		map.put("totalPage", listCnt/10 == 0? 1 : listCnt/10 + 1);	// page.getTotalPages는 사용자가 인식하는 실제 맨끝페이지 번호임
+		map.put("totalPage", listCnt/10 == 0? 1 : listCnt/10 + 1);    // page.getTotalPages는 사용자가 인식하는 실제 맨끝페이지 번호임
 		map.put("list", list);
 		return map;
 	}
-	
+
+	// 등록 페이지 진입
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public String write() {
+	public String write(Model model) {
+		model.addAttribute("flag", "save");
+		model.addAttribute("value", "저장");
 		return "write";
 	}
-	
+
+	// 등록 요청
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	@ResponseBody
 	public void insert(@RequestBody BoardVO vo) {
 		service.insertBoard(vo);
 	}
-	/*
+
+	// 수정 페이지 진입
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String modify(@RequestParam("data") String data, Model model) {
+		JSONObject object = new JSONObject(data);
+		model.addAttribute("seq", object.getInt("seq"));
+		model.addAttribute("title", object.getString("title"));
+		model.addAttribute("content", object.getString("content"));
+		model.addAttribute("flag", "modify");
+		model.addAttribute("value", "수정");
+		return "write";
+	}
+
+	// 수정 요청
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
 	public void update(@RequestBody BoardVO vo) {
-		
 		service.updateBoard(vo);
 	}
-	
-	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/delete/{seq}", method = RequestMethod.GET)
 	@ResponseBody
-	public void delete(@RequestParam("seq") int seq) {
-		
+	public void delete(@PathVariable int seq) {
 		service.deleteBoard(seq);
 	}
-	*/
-	
-	
-	
-	@RequestMapping(value = "/view/{seq}", method = RequestMethod.GET) 
+
+	// 글보기 진입
+	@RequestMapping(value = "/view/{seq}", method = RequestMethod.GET)
 	public String view(@PathVariable int seq, Model model) {
-		
-		BoardVO vo = service.selectBoardOne(seq);
-		
-		model.addAttribute("vo", vo);
-		
+		service.updateViewCount(seq);
+		BoardVO bo = service.selectBoardOne(seq);
+		List<CommentVO> co = service.selectComments(seq);
+		//System.out.println(co);
+		model.addAttribute("vo", bo);
+		model.addAttribute("co", co);
 		return "view";
 	}
-	
-	
-	
+
+	// 댓글 작성
+	@RequestMapping(value = "/comment/write", method = RequestMethod.POST)
+	@ResponseBody
+	public void insertComment(@RequestBody CommentVO vo) {
+		service.insertComment(vo);
+	}
+
+
+
 }

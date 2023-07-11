@@ -9,9 +9,10 @@
         , title
         , content
         , id
-        , if(DATE_FORMAT(now(), '%c-%d') = DATE_FORMAT(registDate, '%c-%d'),DATE_FORMAT(registDate, '%H:%i'), DATE_FORMAT(registDate, '%c-%d')) as registDate
+        , if(DATE_FORMAT(now(), '%c-%d') = DATE_FORMAT(registDate, '%c-%d'),DATE_FORMAT(registDate, '%H:%i'), DATE_FORMAT(registDate, '%m/%d')) as registDate
         , DATE_FORMAT(modifyDate, '%c-%d %h:%i') as modifyDate
         , deleteYn
+		, viewCount
         , row_number() over() as rowNum
         	from board
         where deleteYn = 'N'
@@ -59,6 +60,12 @@
     		from board 
     	where seq = #{seq}
     </select>
+
+	<update id="updateViewCount" parameterType="int">
+		update board
+		set viewCount = viewCount + 1
+		where seq = #{seq}
+	</update>
     
     <insert id="insertBoard" parameterType="BoardVO">
     	insert into board (
@@ -74,13 +81,26 @@
     </update>  
     
     <update id="updateBoard" parameterType="BoardVO">
-    	update board set
-    		title = ${title}
-    		,content = ${content}
+    	update board
+		set
+    		title = #{title}
+    		,content = #{content}
     		,modifyDate = now()
-    		,deleteYn
     	where seq = #{seq}
     </update>
+
+	<insert id="insertComment" parameterType="CommentVO">
+		insert into comment (
+			content, boardSeq
+		)
+		values (
+			#{content}, #{boardSeq}
+		)
+	</insert>
+
+	<select id="sc" parameterType="int" resultType="CommentVO">
+		select * from comment where boardSeq = #{boardSeq}
+	</select>
     
     
     

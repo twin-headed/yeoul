@@ -93,36 +93,44 @@ div.wrap1 .wrap2 {
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
-						<li><span class="hlavny_"><a href="/board/list">사용중지게시판
+						<li><span class="hlavny_"><a href="/board/list">공략게시판
 							</a></span></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li class="active"></li>
 					</ul>
 				</div>
 				<div class="container" style="width: 99%; float:left; margin-right:0%; padding:5px; background-color:white">
-					<label for="inputName">제목</label>
-					<input type="text" id="title" style="width:70%; margin-left:5px; margin-bottom:10px; margin-right:15%;">
-					<button type="button" class="btn btn-dark btn-sm" id="save">저장</button>
+					<label>제목</label>
+					<input th:value="${title}" type="text" id="title" style="width:70%; margin-left:5px; margin-bottom:10px; margin-right:15%;">
 					<textarea class="summernote" name="editordata"></textarea>
+					<button type="button" class="btn btn-dark btn-sm" style="float: right; margin-top: 10px;" th:id="${flag}" th:text="${value}"></button>
 				</div>
 			</div>
 		</div>
 		<div style="text-align: center;">
-				<구버전 프리 바람의나라-Renewal By Yeoulserver>
-			</div>
+				&lt구버전 프리 바람의나라-Renewal By Yeoulserver&gt
+		</div>
 	</div>
-	<script>
+	<script th:inline="javascript">
+
+		let seq = /*[[${seq}]]*/ '';
+		let title = /*[[${title}]]*/ '';
+		let content = /*[[${content}]]*/ '';
+		let flag = /*[[${flag}]]*/ '';
+
 		$(document).ready(function() {
 			  $('.summernote').summernote({
 				  height: 350,
 				  lang: "ko-KR",
-		            callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+					callbacks: {	//여기 부분이 이미지를 첨부하는 부분
 						onImageUpload : function(files) {
 							uploadSummernoteImageFile(files[0],this);
 						}
 					}
 			  });
+			$(".summernote").summernote("code", content);
 		});
+
 		
 		function uploadSummernoteImageFile(file, editor) {
 			var data = new FormData();
@@ -150,33 +158,32 @@ div.wrap1 .wrap2 {
 			location.href="/";			
 		});
 		
-		$("#save").on("click",function(){
-			
-				if(!confirm("저장ㄱ?")) {
+		$("#save, #modify").on("click",function(){
+
+				if(!confirm("저장하시겠습니까?")) {
 					return false;	
 				}
 				
 				var data = {
 					title: $("#title").val(),
-					content: $(".summernote").val()
+					content: $(".summernote").val(),
+					seq: seq
 				}
 				
 				$.ajax({
 					data : JSON.stringify(data),
 					type : "POST",
-					url : "/board/insert",
+					url : flag === 'save'?"/board/insert":"/board/update",
 					contentType: 'application/json; charset=utf-8',
 					success : function(response) {
-						            alert("저장!");							
-					 }
+						alert("저장!");
+						location.href = "/board/list";
+					}
 					,error:function(request,status,error, data){
-		          	            alert("저장실패!");
-		       	     }
+		          		alert("저장실패!");
+		       		}
 				});
-				
-				
 		});
-		
 	</script>
 </body>
 </html>
