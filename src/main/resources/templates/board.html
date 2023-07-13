@@ -127,6 +127,7 @@ select, option {
 						<li class="active"></li>
 					</ul>
 				</div>
+
 				<div style="width: 23%; float: left; margin-right:0.5%">
 					<div>여울서버는 어떤곳인가요?</div>
 					<div>
@@ -140,8 +141,7 @@ select, option {
 						by 아기사자
 					</h2>
 				</div>
-
-				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white">
+				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 1.2% 0px; background-color:white">
 					<table class="table table-hover fz_board">
 						<colgroup>
 					        <col width="10%">
@@ -257,10 +257,10 @@ select, option {
 								if(response.pageNum > 10) {
 									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ (response.startPage-1) +')">이전</a></li>').prependTo("#paging");
 									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(1)">&lt;&lt;</a></li>').prependTo("#paging");
-								}
-								if(response.totalPage > response.endPage) {
-									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ (response.startPage+10) +')">다음</a></li>').appendTo("#paging");
-									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ response.totalPage +')">&gt;&gt;</a></li>').appendTo("#paging");
+									if(response.totalPage > response.endPage) {
+										$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(' + (response.startPage + 10) + ')">다음</a></li>').appendTo("#paging");
+										$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(' + response.totalPage + ')">&gt;&gt;</a></li>').appendTo("#paging");
+									}
 								}
 							}
 						}

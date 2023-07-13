@@ -49,7 +49,11 @@ public class BoardService {
 	}
 
 	public List<CommentVO> selectComments(int boardSeq) {
-		return sqlQuery.selectList("sc", boardSeq);
+		return sqlQuery.selectList("selectComment", boardSeq);
+	}
+
+	public List<CommentVO> selectSubComments(int boardSeq) {
+		return sqlQuery.selectList("selectSubComment", boardSeq);
 	}
 
 	public void updateViewCount(int seq) {
@@ -58,5 +62,9 @@ public class BoardService {
 
 	public void insertComment(CommentVO vo) {
 		sqlQuery.insert("insertComment", vo);
+	}
+
+	public void insertSubComment(CommentVO vo) {
+		sqlQuery.insert("insertSubComment", vo);
 	}
 }

@@ -91,15 +91,28 @@
 
 	<insert id="insertComment" parameterType="CommentVO">
 		insert into comment (
-			content, boardSeq
+			content, boardSeq, id, registDate
 		)
 		values (
-			#{content}, #{boardSeq}
+			#{content}, #{boardSeq}, #{id}, now()
 		)
 	</insert>
 
-	<select id="sc" parameterType="int" resultType="CommentVO">
-		select * from comment where boardSeq = #{boardSeq}
+	<insert id="insertSubComment" parameterType="CommentVO">
+		insert into comment (
+		content, boardSeq, id, registDate, followSeq
+		)
+		values (
+		#{content}, #{boardSeq}, #{id}, now(), #{followSeq}
+		)
+	</insert>
+
+	<select id="selectComment" parameterType="int" resultType="CommentVO">
+		select * from comment where boardSeq = #{boardSeq} and followSeq is null
+	</select>
+
+	<select id="selectSubComment" parameterType="int" resultType="CommentVO">
+		select * from comment where boardSeq = #{boardSeq} and followSeq is not null
 	</select>
     
     

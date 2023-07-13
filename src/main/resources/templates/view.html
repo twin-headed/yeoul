@@ -228,7 +228,7 @@ textarea#wr_content {
 						<div class="fr">
 							<span class="bo_v_date"><span class="sound_only">작성일 </span><strong th:text="${vo.registDate}"></strong></span> <span class="bar">|</span>
 							<span class="bo_v_hit"> 조회 <strong th:text="${vo.viewCount}"></strong></span> <span class="bar">|</span>
-							<span class="bo_v_comment"> 댓글 <strong th:text="${co.size()}"></strong></span>
+							<span class="bo_v_comment"> 댓글 <strong th:text="${coCount}"></strong></span>
 						</div>
 					</section>
 					<div id="utext" style="height:fit-content; padding:2%; min-height:419px; position: relative;" th:utext="${vo.content}">
@@ -236,32 +236,52 @@ textarea#wr_content {
 					</div>
 					<section id="bo_vc">
 						<div class="bo_vc_top">
-							<h2 style="margin-left:10px;">댓글 목록 <em th:text="${co.size()}"></em></h2>
+							<h2 style="margin-left:10px;">댓글 목록 <em th:text="${coCount}"></em></h2>
 						</div>
 
 						<article th:each="item : ${co}">
+							<input type="hidden" class="seq" th:value="${item.seq}"/>
 							<header style="z-index:4">
 								<span class="bo_vc_symbol_target" id="c_5124"></span>
-							<div class="f_wrap">
-								<div class="fl">
-									<span class="bo_vc_hdinfo"> <span id="commenter" style="margin-right:10px;">아기사자</span> <time datetime="2022-11-07T14:22:00+09:00">22-11-07 14:22</time></span>
+								<div class="f_wrap">
+									<div class="fl">
+										<span class="bo_vc_hdinfo"> <span style="margin-right:10px;" th:text="${item.getId()}"></span> <time th:text="${item.registDate}"></time></span>
+									</div>
 								</div>
-							</div>
 							</header>
 							
 							<div class="bo_vc_content"><br th:text="${item.content}"></div>
+							<footer>
+								<ul class="bo_vc_act">
+									<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>
+								 </ul>
+							</footer>
+
+							<article th:each="subComment: ${item.getSubComment()}">
+								<header style="z-index:4">
+									<span class="bo_vc_symbol_target"></span>
+									<div class="f_wrap">
+										<div class="fl">
+											<span class="bo_vc_hdinfo"> <span style="margin-right:10px;" th:text="${subComment.getId()}"></span> <time th:text="${subComment.registDate}"></time></span>
+										</div>
+									</div>
+								</header>
+
+								<div class="bo_vc_content"><br th:text="${subComment.content}"></div>
 								<footer>
-						            <ul class="bo_vc_act">
-						                <a href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>                                            
-						             </ul>
-						        </footer>
+									<ul class="bo_vc_act">
+										<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>
+									</ul>
+								</footer>
+							</article>
 						</article>
-						<aside id="bo_vc_w">
-							<div id="comment_form" class="comment_form">
+
+						<aside>
+							<div class="comment_form">
 								<div style="height:150px" class="write_body">
 									<div class="no_editor">
 										<span class="placeholder placeholder_textarea" style="background-color: #fafafa;">
-											<textarea name="content" id="wr_content" class="bo_vc_wr_content"></textarea>
+											<textarea name="content" class="bo_vc_wr_content"></textarea>
 										</span>
 									</div>
 									<div class="f_wrap">
@@ -272,12 +292,31 @@ textarea#wr_content {
 								</div>
 							</div>
 						</aside>
+
 					</section>
 				</div>
 			</div>
 		</div>
 		<div style="text-align: center;">&lt구버전 프리 바람의나라-Renewal By Yeoulserver&gt</div>
 	</div>
+	<template id="comment_temp">
+		<aside id="bo_vc_w">
+			<div id="comment_form" class="comment_form">
+				<div style="height:150px" class="write_body">
+					<div class="no_editor">
+										<span class="placeholder placeholder_textarea" style="background-color: #fafafa;">
+											<textarea name="subContent" id="wr_content" class="bo_vc_wr_content"></textarea>
+										</span>
+					</div>
+					<div class="f_wrap">
+						<div style="padding-right:0px;" class="fr">
+							<input onclick="sendSubcomment(this)" style="width:auto; border:none; float:right; margin-top:0px; background-color: #fafafa;" type="image" src="/resources/img/btn_submit_comment.gif" alt="댓글등록" title="댓글등록">
+						</div>
+					</div>
+				</div>
+			</div>
+		</aside>
+	</template>
 	<script th:inline="javascript">
 
 		let seq = /*[[${vo.seq}]]*/ '';
@@ -316,6 +355,43 @@ textarea#wr_content {
 				,error:function(request,status,error, data){
 	          	            alert("Error");
 	       	        }
+			});
+		}
+
+		function bringComment(tis) {
+
+			if($('#bo_vc_w').is(':visible')) {
+				$('#bo_vc_w').remove();
+			}
+			$(tis).parents('article').last().append($("#comment_temp").html());
+		}
+
+		function sendSubcomment(tis) {
+			var followSeq = $(tis).parents('article').last().find('input').val();
+			if(!confirm("등록하시겠습니까?")) {
+				return false;
+			}
+			if($.trim($("#wr_content").val()) === '') {
+				alert("내용을 입력해주세요.");
+				return false;
+			}
+			var data = {
+				boardSeq : seq,
+				content : $('textArea[name="subContent"]').val(),
+				id : 'QA',
+				followSeq: followSeq
+			}
+			$.ajax({
+				type : "POST",
+				url : "/board/subComment/write",
+				contentType: 'application/json; charset=utf-8',
+				data : JSON.stringify(data),
+				success : function(response) {
+					location.href = "/board/view/"+seq;
+				}
+				,error:function(request,status,error, data){
+					alert("등록실패");
+				}
 			});
 		}
 
@@ -376,13 +452,14 @@ textarea#wr_content {
 			if(!confirm("등록하시겠습니까?")) {
 				return false;
 			}
-			if($.trim($("#wr_content").val()) === '') {
+			if($.trim($('textArea[name="content"]').val()) === '') {
 				alert("내용을 입력해주세요.");
 				return false;
 			}
 			var data = {
 				boardSeq : seq,
-				content : $("#wr_content").val()
+				content : $('textArea[name="content"]').val(),
+				id : 'QA'
 			}
 			$.ajax({
 				type : "POST",
@@ -398,10 +475,6 @@ textarea#wr_content {
 			});
 		});
 
-
-
-
-		
 	</script>
 </body>
 </html>
