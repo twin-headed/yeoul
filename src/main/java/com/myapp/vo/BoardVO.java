@@ -13,6 +13,7 @@ public class BoardVO {
 	private String modifyDate;
 	private String deleteYn;
 	private int viewCount;
+	private int commentCount;
 
 	private int rowNum;
 	// 요청시 초기화

@@ -2,6 +2,7 @@ package com.myapp.controller;
 
 import java.io.StringWriter;
 import java.lang.reflect.Array;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,12 +62,13 @@ public class BoardController {
 		vo.setPagePerNum(pageable.getPageSize());
 		// 게시글 조회
 		List<BoardVO> list = service.selectBoardlist(vo);
+		System.out.println(list);
 		// 총 게시글 수 조회
 		int listCnt = service.selectBoardListCnt(vo);
 		// 현재페이지 - 1 / 블록당 페이지수 -> 이걸로 0부터 시작하는 블록의 몇번째 블록인지 파악, 그 후 블록당 페이지수를 곱해주고 1을 더해주는것은 시작페이지는 1, 11, 21 등의 시작 숫자를 맞춰주기 위함임
 		int startPage = (pageable.getPageNumber() / 10) * 10 + 1;
 		// 마찬가지로 몇번째 블록인지 구한후 + 블록당 페이지수를 해주면 각 블록당 끝 페이지가 나온다. 다만 전체 페이지수가 계산된 끝 페이지수보다 작은 경우가 있을수있으니 둘중 작은값을 선택한다.
-		int endPage = Math.min((pageable.getPageNumber()/10) * 10 + 10, listCnt/10 == 0? 1 : (double)listCnt/10 == 1? 1 : listCnt/10 + 1);
+		int endPage = Math.min((pageable.getPageNumber()/10) * 10 + 10, listCnt/10 == 0? 1 : listCnt%10 == 0? listCnt/10 : listCnt/10 + 1);
 		// 결과값 담아주기
 		Map<String, Object> map = new HashMap<>();
 		map.put("pageNum", pageable.getPageNumber() + 1); // pageable.getPageNumber는 사용자가 인식하는 페이지 + 1값임 따라서 -1을 처리해서 실제 인식값으로 바꿔줌

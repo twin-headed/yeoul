@@ -5,32 +5,35 @@
 <mapper namespace="com.myapp.service.BoardService">
 
     <select id="selectBoardList" parameterType="BoardVO" resultType="BoardVO">
-        select seq
-        , title
-        , content
-        , id
-        , if(DATE_FORMAT(now(), '%c-%d') = DATE_FORMAT(registDate, '%c-%d'),DATE_FORMAT(registDate, '%H:%i'), DATE_FORMAT(registDate, '%m/%d')) as registDate
-        , DATE_FORMAT(modifyDate, '%c-%d %h:%i') as modifyDate
-        , deleteYn
-		, viewCount
-        , row_number() over() as rowNum
-        	from board
-        where deleteYn = 'N'
+		select b.seq
+		, b.title
+		, b.content
+		, b.id
+		, if(DATE_FORMAT(now(), '%c-%d') = DATE_FORMAT(b.registDate, '%c-%d'),DATE_FORMAT(b.registDate, '%H:%i'), DATE_FORMAT(b.registDate, '%m/%d')) as registDate
+		, DATE_FORMAT(modifyDate, '%c-%d %h:%i') as modifyDate
+		, deleteYn
+		, b.viewCount
+		, c.commentCount
+		, row_number() over() as rowNum
+		from board b
+		left join (select count(*) as commentCount, boardSeq from comment group by boardSeq) c
+		on b.seq = c.boardSeq
+		where deleteYn = 'N'
         <choose>
         	<when test='title != null and content != null'>
-        		and title like "%${content}%" ||  content like "%${content}%"
+        		and b.title like "%${content}%" ||  b.content like "%${content}%"
         	</when>
         	<when test='title != null'>
-        		and title like "%${title}%"
+        		and b.title like "%${title}%"
         	</when>
 			<when test='content != null'>
-        		and content like "%${content}%"
+        		and b.content like "%${content}%"
         	</when>
         	<when test='id != null'>
-        		and id like "%${id}%"
+        		and b.id like "%${id}%"
         	</when>        	
         </choose>
-        	order by seq desc
+        	order by b.seq desc
         	limit #{pagePerNum} offset #{offset}
     </select>
       

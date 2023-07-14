@@ -89,6 +89,35 @@ select, option {
 
 }
 
+.pagination > li > a
+{
+	background-color: white;
+	color: #c57033;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+	color: #c57033;
+	background-color: #eee;
+	border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+	color: white;
+	background-color: #c57033;
+	border: solid 1px #c57033;
+}
+
+.pagination > .active > a:hover
+{
+	background-color: #c57033;
+	border: solid 1px #c57033;
+}
+
 </style>
 <script src="/resources/js/jquery-3.1.1.js"></script>
 </head>
@@ -141,7 +170,7 @@ select, option {
 						by 아기사자
 					</h2>
 				</div>
-				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 1.2% 0px; background-color:white">
+				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 674px;">
 					<table class="table table-hover fz_board">
 						<colgroup>
 					        <col width="10%">
@@ -224,6 +253,7 @@ select, option {
 				data : JSON.stringify(data),
 				contentType: 'application/json',
 				url : "/board/list",
+				headers : {"Access-Control-Allow-Origin" : "*"},
 				success : function(response) {
 					// 로그출력
 					console.log(response);
@@ -237,11 +267,11 @@ select, option {
 						// 게시글 출력 -> 타임리프로 표기 x
 						for(var i=0; i<response.list.length; i++) {
 							listHtml = '<tr>'
-							listHtml = listHtml + '<td>' + response.list[i].rowNum + '</td>'
-							listHtml = listHtml + '<td>' + '<a href="/board/view/'+response.list[i].seq+'">' + response.list[i].title + '</td>'
-							listHtml = listHtml + '<td>' + response.list[i].id + '</td>'
-							listHtml = listHtml + '<td>' + response.list[i].registDate + '</td>'
-							listHtml = listHtml + '<td>' + response.list[i].viewCount + '</td>'
+							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].rowNum + '</p>' + '</td>'
+							listHtml = listHtml + '<td>' + '<a style="text-decoration-line:none" href="/board/view/'+response.list[i].seq+'">' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].title + (response.list[i].commentCount ? ' [' + response.list[i].commentCount + ']' : '') + '</p>' + '</td>'
+							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].id + '</p>' + '</td>'
+							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].registDate + '</p>' + '</td>'
+							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].viewCount + '</p>' + '</td>'
 							listHtml = listHtml + '</tr>';
 							$("#list").append(listHtml);
 						}
@@ -267,7 +297,7 @@ select, option {
 						$("#paging").append('<li class="page-item" style="margin-left:1%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
 					}else {
 						listHtml = '<tr>'
-						listHtml = listHtml + '<td colspan="5" style="padding: 50px 0 60px 0;">게시물이 없습니다.</td>'
+						listHtml = listHtml + '<td colspan="5" style="padding: 55px 0 55px 0;">게시물이 없습니다.</td>'
 						listHtml = listHtml + '</tr>';
 						$("#list").append(listHtml);
 						$("#paging").append('<li class="page-item" style="margin-left:80%;"><a class="page-link" href="/board/write">글쓰기</a></li>');

@@ -32,7 +32,7 @@ public class BoardService {
 	}
 
 	public void insertBoard(BoardVO vo) {
-		vo.setId("애기사자");
+		vo.setId("QA");
 		sqlQuery.insert("insertBoard", vo);
 	}
 
