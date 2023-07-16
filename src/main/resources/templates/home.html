@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="/resources/css/bootstrap.css">
@@ -7,6 +7,9 @@
 		  href="/resources/css/menu.css">
 	<link rel="stylesheet" type="text/css" media="screen, projection"
 		  href="/resources/css/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type"
 		  content="text/html; charset=UTF-8">
@@ -76,7 +79,94 @@
 			background-color: #7b3e0a;
 		}
 
+		.oButton {
+			position: relative;
+			width: 50px;
+			height: 50px;
+			background-color: #c57033;
+			color: white;
+			border: none;
+			text-align: center;
+			text-decoration: none;
+			font-size: 16px;
+			cursor: pointer;
+			border-radius: 5px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			float: right;
+			margin-right: 29px;
+			margin-top: 5px;
+		}
+
+		.oButton::before {
+			content: "로그아웃";
+			font-size: 10px;
+			font-weight: bold;
+			text-shadow: 0px 0px 4px white, 0px 0px 6px white; /* 흰색 부분에 그림자 추가 */
+		}
+
+		.oButton:hover {
+			background-color: #964d0d;
+		}
+
+		.oButton:active {
+			background-color: #7b3e0a;
+		}
+
+		.welcome-message {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		.username {
+			font-size: 11px;
+			color: #333;
+		}
+
+		.greeting {
+			font-size: 18px;
+			margin-top: 10px;
+			color: #666;
+		}
+
+		.logout-link {
+			text-decoration: none;
+			color: #c57033;
+			font-size: 14px;
+			margin-top: 20px;
+		}
+
+		.logout-link:hover {
+			color: #964d0d;
+		}
+
+		.welcome-message {
+			text-align: center;
+			margin-top: 20px;
+			padding: 10px;
+			border-radius: 5px;
+			width: 160px;
+			margin-left: 10px;
+		}
+
+		.tooltip-text {
+			display: none;
+			position: absolute;
+			max-width: 200px;
+			border-radius: 15px;
+			padding: 5px;
+			font-size: 0.8em;
+			color: black;
+			background: #e9ecef;
+		}
+
+		.tooltip-icon:hover .tooltip-text {
+			display: initial;
+		}
+
 	</style>
+	<script src="/resources/js/jquery-3.1.1.js"></script>
 </head>
 <body>
 <div class="wrap1">
@@ -115,17 +205,26 @@
 				</ul>
 			</div>
 			<img src="/resources/img/바홍이.jpg" style="width:660px; float: right"/>
-			<form name="fo" method="get">
-				<input class="input-border" placeholder="아이디" type="text" size="15" value=""/><br>
-				<input class="input-border" placeholder="비밀번호" type="password" size="15" value="" style="margin-top:10px;"/>
-				<button class="lButton"></button>
+			<form name="fo" method="get" sec:authorize="!isAuthenticated()">
+				<input class="input-border" id="id" placeholder="아이디" type="text" size="15" value=""/><br>
+				<input class="input-border" id="password" placeholder="비밀번호" type="password" size="15" value="" style="margin-top:10px;"/>
+				<button id="login" class="lButton" type="button"></button>
 			</form>
-			<div class="links" style="
-					margin-top: 20px;
-					margin-left: 22px;
-				">
-				<a style="text-decoration: none" href="#">회원가입</a><br>
-				<a style="text-decoration: none" href="#">ID/PW 찾기</a>
+			<div class="links" style="margin-top: 20px; margin-left: 22px;" sec:authorize="!isAuthenticated()">
+				<a style="text-decoration: none" href="/member/signup">회원가입</a><br>
+				<a style="text-decoration: none" href="#"><del>ID/PW 찾기</del></a>
+			</div>
+			<div sec:authorize="isAuthenticated()" class="welcome-message">
+				<div sec:authentication="name" class="username" style="font-family: 'Nanum Pen Script', cursive; font-size: 30px; display:inline; cursor:default "></div>
+				<span sec:authorize="hasRole('VIP')" class="tooltip-icon">
+					<img style="width:25px; height:25px; cursor: pointer;" src="/resources/img/authorized.png">
+						<span class="tooltip-text">인증완료</span>
+				</span>
+				<span sec:authorize="hasRole('USER')" class="tooltip-icon">
+					<img style="width:12px; height:12px; cursor: pointer;" src="/resources/img/unauthorized.png">
+						<span class="tooltip-text">인증필요</span>
+				</span>
+					<img onclick="logout();" style="width:15px; height:15px; cursor: pointer; margin-left:10px;" src="/resources/img/logout.png">
 			</div>
 			<br><br><br><br><br>
 			<div class="header">여울서버는 어떤곳인가요?</div>
@@ -137,5 +236,40 @@
 	</div>
 	<div style="text-align: center;">구버전 프리 바람의나라-Renewal By Yeoulserver</div>
 </div>
+<script>
+	$("#login").on("click",function() {
+
+		if(document.querySelector("#id").value.trim() === '' || document.querySelector("#password").value.trim() === '') {
+			alert("아이디 또는 비밀번호를 입력해주세요.");
+			return false;
+		}
+		$.ajax({
+			data : {
+				username: document.querySelector("#id").value,
+				password: document.querySelector("#password").value
+			},
+			type : "POST",
+			url : "/member/login",
+			success : function(response) {
+				console.log(response);
+				if(response.result === 'success') {
+					document.location.reload();
+				} else {
+					alert("아이디 또는 비밀번호가 잘못되었습니다.")
+				}
+			}
+			,error:function(xhr){
+				alert("아이디 또는 비밀번호가 잘못되었습니다.")
+			}
+		});
+	});
+
+	function logout(){
+		if(confirm("로그아웃 하시겠습니까?")) {
+			alert("로그아웃");
+			location.href = "/logout";
+		}
+	}
+</script>
 </body>
 </html>

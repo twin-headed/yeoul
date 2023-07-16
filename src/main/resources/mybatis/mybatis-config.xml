@@ -15,6 +15,7 @@
          <typeAlias alias="map" type="java.util.Map" />
          <typeAlias alias="list" type="java.util.List" />
          <typeAlias type="com.myapp.vo.BoardVO" alias="BoardVO"/>
+        <typeAlias type="com.myapp.vo.MemberVO" alias="MemberVO"/>
         <typeAlias type="com.myapp.vo.CommentVO" alias="CommentVO"/>
     </typeAliases>    
   

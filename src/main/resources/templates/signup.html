@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/resources/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" media="screen, projection" href="/resources/css/menu.css">
+    <link rel="stylesheet" type="text/css" media="screen, projection" href="/resources/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/resources/js/mustache.js"></script><style id="dark-reader-style" type="text/css">@media screen {
+
+}</style>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+        div.wrap1 .wrap2 {
+            /* only with left panel- background-image: url(img/bg1.gif); */
+            /* right and left panel */
+            background-image: url(/resources/img/bg2.gif);
+            /* only with right panel - background-image: url(img/bg3.gif); */
+        }
+
+        .jumbotron {
+            background-size: cover; =
+        color: white;
+        }
+
+        *, *::before, *::after {
+            box-sizing: initial;
+        }
+
+        :root {
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+        }
+
+        .scontainer {
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(197, 112, 51, 0.3);
+            width: 400px;
+            margin-top:4%;
+            margin-left:27%;
+        }
+
+        .h2 {
+            text-align: center;
+            margin: 0 0 20px;
+        }
+
+        .form {
+            padding: 30px 40px;
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            position: relative;
+            border: none;
+        }
+
+        .form-control label {
+            color: #777;
+            display: block;
+        }
+
+        .form-control input {
+            border: 2px solid #f0f0f0;
+            border-radius: 4px;
+            display: block;
+            width: 85%;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .form-control input:focus {
+            outline: 0;
+            border-color: #777;
+        }
+
+        .form-control.success input {
+            border-color: var(--success-color);
+        }
+
+        .form-control.error input {
+            border-color: var(--error-color);
+        }
+
+        .form-control small {
+            color: var(--error-color);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            visibility: hidden;
+        }
+
+        .form-control.error small {
+            visibility: visible;
+        }
+
+        .form button {
+            cursor: pointer;
+            background-color: #c57033;
+            border: 2px solid #c57033;
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            font-size: 16px;
+            padding: 10px;
+            margin-top: 20px;
+            width: 85.5%;
+            text-shadow: 0px 0px 4px white, 0px 0px 6px white;
+            margin-left: 10px;
+        }
+
+        .form button:hover {
+            background-color: #964d0d;
+        }
+
+        small {
+            font-size: 0.675em;
+            margin-left: 15px;
+        }
+
+    </style>
+    <script src="/resources/js/jquery-3.1.1.js"></script>
+</head>
+<body>
+<div class="wrap1">
+    <div class="wrap2">
+        <div class="logo" style="cursor: pointer;">
+            <div style="display: inline; float: left;">
+                여울서버
+                <div class="slogan">여러분을 초대합니다.</div>
+            </div>
+            <div style="display: inline; float: right"></div>
+        </div>
+
+        <div id="menu">
+            <div class="menu" style="margin-top: -16px;">
+                <ul>
+                    <li></li>
+                    <li><img src="/resources/img/divider2.png" alt=""></li>
+                    <li></li>
+                    <li><img src="/resources/img/divider2.png" alt=""></li>
+                    <li><span class="hlavny_"><a href="https://t.me/yeoulbaramchat">커뮤니티(단톡방)</a></span></li>
+                    <li><img src="/resources/img/divider2.png" alt=""></li>
+                    <li></li>
+                    <li><img src="/resources/img/divider2.png" alt=""></li>
+                    <li><span class="hlavny_"><a href="https://www.mediafire.com/file/jncheucvpbyfs8t/%255B21.12.10%255D_Yeoulserver.zip/file">자료실(다운로드)
+							</a></span></li>
+                    <li><img src="/resources/img/divider2.png" alt=""></li>
+                    <li></li>
+                    <li><img src="/resources/img/divider2.png" alt=""></li>
+                    <li><span class="hlavny_"><a href="/board/list">공략게시판
+							</a></span></li>
+                    <li><img src="/resources/img/divider2.png" alt=""></li>
+                    <li class="active"></li>
+                </ul>
+            </div>
+
+            <div class="container" style="width: 100%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 674px;">
+                <div class="scontainer">
+                    <form id="form" class="form">
+                        <div class="form-control">
+                            <label for="id">아이디</label>
+                            <input type="text" id="id" placeholder="아이디를 입력해주세요(4자리 이상)" maxlength="15">
+                            <small>Error message</small>
+                        </div>
+                        <div class="form-control">
+                            <label for="gameId">인게임 아이디</label>
+                            <input type="text" id="gameId" placeholder="한글로 된 인게임 아이디를 입력해주세요." maxlength="6">
+                            <small>Error message</small>
+                        </div>
+                        <div class="form-control">
+                            <label for="password">비밀번호</label>
+                            <input type="password" id="password" placeholder="비밀번호를 입력해주세요" maxlength="15">
+                            <small>Error message</small>
+                        </div>
+                        <div class="form-control">
+                            <label for="password2">비밀번호 확인</label>
+                            <input type="password" id="password2" placeholder="비밀번호를 다시한번 입력해주세요." maxlength="15">
+                            <small>Error message</small>
+                        </div>
+                        <button id="save" type="button">가입하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        &lt;구버전 프리 바람의나라-Renewal By Yeoulserver&gt;
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+    });
+    $(".logo").on("click",function(){
+        location.href="/";
+    });
+
+    let iField = document.querySelector("#id");
+    let giField = document.querySelector("#gameId");
+    let pField = document.querySelector("#password");
+    let p2Field = document.querySelector("#password2");
+    const regex = /^[a-zA-Z]+$/;
+    const kRegex = /^[가-힣]+$/;
+
+    iField.addEventListener('keydown', (e) => {
+       if(e.key === 'Tab') {
+           if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
+               iField.nextElementSibling.innerText = '* 4자리 이상의 영문아이디를 입력해주세요.';
+               iField.nextElementSibling.style.visibility = "visible";
+           }
+       }else {
+           iField.nextElementSibling.style.visibility = "hidden";
+       }
+    });
+    iField.addEventListener('blur', (e) => {
+        if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
+            iField.nextElementSibling.innerText = '* 4자리 이상의 영문아이디를 입력해주세요.';
+            iField.nextElementSibling.style.visibility = "visible";
+        }else {
+            iField.nextElementSibling.style.visibility = "hidden";
+        }
+    });
+
+    giField.addEventListener('keydown', (e) => {
+        if(e.key === 'Tab') {
+            if (giField.value.trim() === '' || giField.value.trim().length < 2 ||!kRegex.test(giField.value.trim())) {
+                giField.nextElementSibling.innerText = '* 2자리 이상의 인게임 한글 아이디를 입력해주세요.';
+                giField.nextElementSibling.style.visibility = "visible";
+            }
+        }else {
+            giField.nextElementSibling.style.visibility = "hidden";
+        }
+    });
+    giField.addEventListener('blur', (e) => {
+        if (giField.value.trim() === '' || giField.value.trim().length < 2 || !kRegex.test(giField.value.trim())) {
+            giField.nextElementSibling.innerText = '* 2자리 이상의 인게임 한글 아이디를 입력해주세요.';
+            giField.nextElementSibling.style.visibility = "visible";
+        } else {
+            giField.nextElementSibling.style.visibility = "hidden";
+        }
+    });
+
+    pField.addEventListener('keydown', (e) => {
+        if(e.key === 'Tab') {
+            if (pField.value.trim() === '' || pField.value.trim().length < 4) {
+                pField.nextElementSibling.innerText = '* 4자리 이상의 비밀번호를 입력해주세요.';
+                pField.nextElementSibling.style.visibility = "visible";
+            }
+        }else {
+            pField.nextElementSibling.style.visibility = "hidden";
+        }
+    });
+    pField.addEventListener('blur', (e) => {
+        if (pField.value.trim() === '' || pField.value.trim().length < 4) {
+                pField.nextElementSibling.innerText = '* 4자리 이상의 비밀번호를 입력해주세요.';
+                pField.nextElementSibling.style.visibility = "visible";
+        } else {
+            pField.nextElementSibling.style.visibility = "hidden";
+        }
+    });
+
+    p2Field.addEventListener('keydown', (e) => {
+        if(e.key === 'Tab') {
+            if (p2Field.value.trim() === '' || p2Field.value.trim().length < 4 || pField.value.trim() !== p2Field.value.trim()) {
+                p2Field.nextElementSibling.innerText = '* 비밀번호가 일치하지 않거나 공백입니다.';
+                p2Field.nextElementSibling.style.visibility = "visible";
+            }
+        }else {
+            p2Field.nextElementSibling.style.visibility = "hidden";
+        }
+    });
+    p2Field.addEventListener('blur', (e) => {
+        if (p2Field.value.trim() === '' || p2Field.value.trim().length < 4 || pField.value.trim() !== p2Field.value.trim()) {
+            p2Field.nextElementSibling.innerText = '* 비밀번호가 일치하지 않거나 공백입니다.';
+            p2Field.nextElementSibling.style.visibility = "visible";
+        } else {
+            p2Field.nextElementSibling.style.visibility = "hidden";
+        }
+    });
+
+    $("#save").on("click",function() {
+
+        var id = $("#id").val();
+        var gameId = $("#gameId").val();
+        var password = $("#password").val();
+        var password2 = $("#password2").val();
+
+        if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
+            alert('4자리 이상의 영문아이디를 입력해주세요.');
+            $("#id").focus();
+            return false;
+        }
+        if (giField.value.trim() === '' || giField.value.trim().length < 2 || !kRegex.test(giField.value.trim())) {
+            alert('2자리의 이상의 인게임 한글 아이디를 입력해주세요.');
+            $("#gameId").focus();
+            return false;
+        }
+        if (pField.value.trim() === '' || pField.value.trim().length < 4) {
+            alert('4자리 이상의 비밀번호를 입력해주세요.');
+            $("#password").focus();
+            return false;
+        }
+        if (p2Field.value.trim() === '' || p2Field.value.trim().length < 4 || pField.value.trim() !== p2Field.value.trim()) {
+            alert('비밀번호가 일치하지 않거나 공백입니다.');
+            $("#password2").focus();
+            return false;
+        }
+        if(!confirm("가입하시겠습니까?")) {
+            return false;
+        }
+
+        var data = {
+            id: id,
+            gameId: gameId,
+            password: password
+        }
+
+        $.ajax({
+            data : JSON.stringify(data),
+            type : "POST",
+            url : "/member/insert",
+            contentType: 'application/json; charset=utf-8',
+            success : function(response) {
+                console.log(response);
+                if(response.result === 'duplicateId') {
+                    alert("이미 가입된 아이디입니다.");
+                    $("#id").focus();
+                }else if(response.result === 'duplicateGameId') {
+                    alert("이미 가입된 인게임 아이디입니다.");
+                    $("#gameId").focus();
+                }else if(response.result === 'success') {
+                    alert("가입성공!");
+                }
+            }
+            ,error:function(request,status,error, data){
+                alert("가입실패!");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

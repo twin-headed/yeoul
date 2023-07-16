@@ -121,6 +121,16 @@ div.wrap1 .wrap2 {
 		$(document).ready(function() {
 			  $('.summernote').summernote({
 				  height: 350,
+				  toolbar: [
+					  ['style', ['style']],
+					  ['font', ['bold', 'underline', 'clear']],
+					  ['fontname', ['fontname']],
+					  ['color', ['color']],
+					  ['para', ['ul', 'ol', 'paragraph']],
+					  ['table', ['table']],
+					  ['insert', ['link', 'picture']],
+					  ['view', ['codeview', 'help']],
+				  ],
 				  lang: "ko-KR",
 					callbacks: {	//여기 부분이 이미지를 첨부하는 부분
 						onImageUpload : function(files) {
