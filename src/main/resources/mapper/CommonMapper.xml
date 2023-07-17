@@ -131,7 +131,7 @@
 		id, gameId, password, role
 		)
 		values (
-		#{id}, #{gameId}, #{password}, 'USER'
+		#{id}, #{gameId}, #{password}, 'VIP'
 		)
 	</insert>
 

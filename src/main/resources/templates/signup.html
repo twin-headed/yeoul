@@ -334,6 +334,7 @@
                     $("#gameId").focus();
                 }else if(response.result === 'success') {
                     alert("가입성공!");
+                    location.href="/";
                 }
             }
             ,error:function(request,status,error, data){

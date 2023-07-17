@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="stylesheet" href="/resources/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" media="screen, projection"
 	href="/resources/css/menu.css">
 <link rel="stylesheet" type="text/css" media="screen, projection"
 	href="/resources/css/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="/resources/js/mustache.js"></script>
@@ -118,6 +121,106 @@ select, option {
 	border: solid 1px #c57033;
 }
 
+.welcome-message {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.username {
+	font-size: 11px;
+	color: #333;
+}
+
+.greeting {
+	font-size: 18px;
+	margin-top: 10px;
+	color: #666;
+}
+
+.logout-link {
+	text-decoration: none;
+	color: #c57033;
+	font-size: 14px;
+	margin-top: 20px;
+}
+
+.logout-link:hover {
+	color: #964d0d;
+}
+
+.welcome-message {
+	text-align: center;
+	margin-top: 20px;
+	padding: 10px;
+	border-radius: 5px;
+	width: 170px;
+	margin-left: 10px;
+}
+
+.tooltip-text {
+	display: none;
+	position: absolute;
+	max-width: 200px;
+	border-radius: 15px;
+	padding: 5px;
+	font-size: 0.8em;
+	color: black;
+	background: #e9ecef;
+}
+
+.tooltip-icon:hover .tooltip-text {
+	display: initial;
+}
+
+.input-border {
+	border: 0;
+	border-bottom: 1px solid #a6634754;
+	background: none;
+	outline: 0;
+	margin-left: 20px;
+	margin-top: 25px;
+	transition: border-bottom-color 0.3s ease; /* 부드러운 전환 효과를 위한 transition 설정 */
+}
+
+.input-border:focus {
+	border-color: black; /* 클릭 시 변경될 색상을 여기에 지정하세요 */
+}
+
+.lButton {
+	position: relative;
+	width: 50px;
+	height: 50px;
+	background-color: #c57033;
+	color: white;
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	float: right;
+	margin-right: 29px;
+	margin-top: 5px;
+}
+
+.lButton::before {
+	content: "로그인";
+	font-size: 10px;
+	font-weight: bold;
+	text-shadow: 0px 0px 4px white, 0px 0px 6px white; /* 흰색 부분에 그림자 추가 */
+}
+
+.lButton:hover {
+	background-color: #964d0d;
+}
+
+.lButton:active {
+	background-color: #7b3e0a;
+}
+
 </style>
 <script src="/resources/js/jquery-3.1.1.js"></script>
 </head>
@@ -158,6 +261,30 @@ select, option {
 				</div>
 
 				<div style="width: 23%; float: left; margin-right:0.5%">
+					<form name="fo" method="get" sec:authorize="!isAuthenticated()">
+						<input class="input-border" id="id" placeholder="아이디" type="text" size="15" value=""/><br>
+						<input class="input-border" id="password" placeholder="비밀번호" type="password" size="15" value="" style="margin-top:10px;"/>
+						<button id="login" class="lButton" type="button"></button>
+					</form>
+					<div class="links" style="margin-top: 20px; margin-left: 22px;" sec:authorize="!isAuthenticated()">
+						<a style="text-decoration: none" href="/member/signup">회원가입</a><br>
+						<a style="text-decoration: none" href="#"><del>ID/PW 찾기</del></a>
+					</div>
+
+					<div sec:authorize="isAuthenticated()" class="welcome-message">
+						<div sec:authentication="name" class="username" style="font-family: 'Nanum Pen Script', cursive; font-size: 30px; display:inline; cursor:default "></div>
+							<span sec:authorize="hasRole('VIP')" class="tooltip-icon">
+							<img style="width:15px; height:15px; cursor: pointer;" src="/resources/img/authorized.png">
+							<span class="tooltip-text">인증완료</span>
+						</span>
+						<span sec:authorize="hasRole('USER')" class="tooltip-icon">
+							<img style="width:12px; height:12px; cursor: pointer;" src="/resources/img/unauthorized.png">
+							<span class="tooltip-text">미인증</span>
+						</span>
+						<img onclick="logout();" style="width:15px; height:15px; cursor: pointer; margin-left:10px;" src="/resources/img/logout.png">
+					</div>
+					<br><br><br><br><br>
+					<!--
 					<div>여울서버는 어떤곳인가요?</div>
 					<div>
 						<br>안녕하세요.여울GM입니다.<br> 경험치 보정배율 서버입니다.<br> 서버는 24시간
@@ -169,6 +296,7 @@ select, option {
 						구현률: 100%<br> 서버 안정성: 100%<br> <br> <br>Made
 						by 아기사자
 					</h2>
+					-->
 				</div>
 				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 674px;">
 					<table class="table table-hover fz_board">
@@ -230,6 +358,14 @@ select, option {
 		$(document).ready(function(){
 			selectBoardList(1);
 		})
+
+		function logout(){
+			if(confirm("로그아웃 하시겠습니까?")) {
+				alert("로그아웃");
+				location.href = "/logout";
+			}
+		}
+
 		function selectBoardList(page) {
 			var data = {
 					pageNum : page? page : 1,
@@ -294,13 +430,17 @@ select, option {
 								}
 							}
 						}
-						$("#paging").append('<li class="page-item" style="margin-left:1%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
+						if(response.principal.authorities[0].authority === 'ROLE_VIP') {
+							$("#paging").append('<li class="page-item" style="margin-left:1%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
+						}
 					}else {
 						listHtml = '<tr>'
 						listHtml = listHtml + '<td colspan="5" style="padding: 55px 0 55px 0;">게시물이 없습니다.</td>'
 						listHtml = listHtml + '</tr>';
 						$("#list").append(listHtml);
-						$("#paging").append('<li class="page-item" style="margin-left:80%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
+						if(response.principal.authorities[0].authority === 'ROLE_VIP') {
+							$("#paging").append('<li class="page-item" style="margin-left:80%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
+						}
 					}
 					/*
 					if(response.totalBlock < 11) { // 전체 블록이 10개 이하
@@ -326,6 +466,34 @@ select, option {
 				}
 			});
 		}
+
+		$("#login").on("click",function() {
+
+			if(document.querySelector("#id").value.trim() === '' || document.querySelector("#password").value.trim() === '') {
+				alert("아이디 또는 비밀번호를 입력해주세요.");
+				return false;
+			}
+			$.ajax({
+				data : {
+					username: document.querySelector("#id").value,
+					password: document.querySelector("#password").value
+				},
+				type : "POST",
+				url : "/member/login",
+				success : function(response) {
+					console.log(response);
+					if(response.result === 'success') {
+						document.location.reload();
+					} else {
+						alert("아이디 또는 비밀번호가 잘못되었습니다.")
+					}
+				}
+				,error:function(xhr){
+					alert("아이디 또는 비밀번호가 잘못되었습니다.")
+				}
+			});
+		});
+
 		$(".logo").on("click",function(){
 			location.href="/";			
 		});

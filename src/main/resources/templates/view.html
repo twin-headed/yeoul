@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="stylesheet" href="/resources/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" media="screen, projection"
@@ -251,7 +251,7 @@ textarea#wr_content {
 							</header>
 							
 							<div class="bo_vc_content"><br th:text="${item.content}"></div>
-							<footer>
+							<footer sec:authorize="hasRole('VIP')">
 								<ul class="bo_vc_act">
 									<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>
 								 </ul>
@@ -268,7 +268,7 @@ textarea#wr_content {
 								</header>
 
 								<div class="bo_vc_content"><br th:text="${subComment.content}"></div>
-								<footer>
+								<footer sec:authorize="hasRole('VIP')">
 									<ul class="bo_vc_act">
 										<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>
 									</ul>
@@ -276,7 +276,13 @@ textarea#wr_content {
 							</article>
 						</article>
 
-						<aside>
+						<div sec:authorize="!isAuthenticated() or hasRole('USER')" th:if="${#lists.size(co) == 0}" class="comment_form">
+							<div style="height:150px;text-align: center;" class="write_body">
+								<h2 style="margin-top: 8%;">댓글이 없습니다.<em></em></h2>
+							</div>
+						</div>
+
+						<aside sec:authorize="hasRole('VIP')">
 							<div class="comment_form">
 								<div style="height:150px" class="write_body">
 									<div class="no_editor">
@@ -322,8 +328,10 @@ textarea#wr_content {
 		let seq = /*[[${vo.seq}]]*/ '';
 		let title = /*[[${vo.title}]]*/ '';
 		let content = /*[[${vo.content}]]*/ '';
-
-		console.log("seq : " + seq);
+		let id = /*[[${vo.id}]]*/ '';
+		let principal = /*[[${principal}]]*/ '';
+		let name = principal !== null? principal.name : '';
+		let authority = principal !== null? principal.authorities[0].authority : '';
 
 		$(document).ready(function() {
 			  $('.summernote').summernote({
@@ -378,7 +386,6 @@ textarea#wr_content {
 			var data = {
 				boardSeq : seq,
 				content : $('textArea[name="subContent"]').val(),
-				id : 'QA',
 				followSeq: followSeq
 			}
 			$.ajax({
@@ -400,13 +407,14 @@ textarea#wr_content {
 		});
 
 		/* 조회자가 해당글의 주인일시 추가하는 로직필요 */
-		$('#utext').after(
-				'<div style="text-align:right">' +
-				'<button id="modify" type="button" class="btn btn-dark btn-sm" id="modify" style="margin-bottom: 5px; margin-right: 5px;">수정</button>' +
-				'<button id="delete" type="button" class="btn btn-danger btn-sm" id="delete" style="margin-bottom: 5px; margin-right: 5px;">삭제</button>' +
-				'</div>'
-		);
-
+		if(id === name && authority === "ROLE_VIP") {
+			$('#utext').after(
+					'<div style="text-align:right">' +
+					'<button id="modify" type="button" class="btn btn-dark btn-sm" id="modify" style="margin-bottom: 5px; margin-right: 5px;">수정</button>' +
+					'<button id="delete" type="button" class="btn btn-danger btn-sm" id="delete" style="margin-bottom: 5px; margin-right: 5px;">삭제</button>' +
+					'</div>'
+			);
+		}
 		$("#modify").on("click",function(){
 			if(!confirm("수정하시겠습니까?")) {
 				return false;
@@ -458,8 +466,7 @@ textarea#wr_content {
 			}
 			var data = {
 				boardSeq : seq,
-				content : $('textArea[name="content"]').val(),
-				id : 'QA'
+				content : $('textArea[name="content"]').val()
 			}
 			$.ajax({
 				type : "POST",

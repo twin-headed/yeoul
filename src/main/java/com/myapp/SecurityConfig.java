@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .mvcMatchers("/","/member/login", "/member/signup","/member/insert","/board/list", "/board/view/{seq}", "/resources/img/*","/resources/js/*","/resources/css/*","/resources/summerNote/*" ).permitAll()
-                .mvcMatchers("/board/write").authenticated() //hasRole("VIP")
+                .mvcMatchers("/board/write").hasRole("VIP")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

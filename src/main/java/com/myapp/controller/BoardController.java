@@ -55,7 +55,7 @@ public class BoardController {
 	//페이지 요청시
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public Map<String, Object> list(@RequestBody BoardVO vo) {
+	public Map<String, Object> list(@RequestBody BoardVO vo, Principal principal) {
 		// PageRequest 구현체의 of 메서드를 사용해서 pageable 인터페이스 구현, 실제페이지에서 1을 뺀값과 페이지당 게시글수 12개를 넣는다.
 		Pageable pageable = PageRequest.of(vo.getPageNum() - 1, 10);
 		vo.setOffset((int)pageable.getOffset());
@@ -76,6 +76,7 @@ public class BoardController {
 		map.put("endPage", endPage);
 		map.put("totalPage", (int) Math.ceil((double) listCnt / 10));    // page.getTotalPages는 사용자가 인식하는 실제 맨끝페이지 번호임
 		map.put("list", list);
+		map.put("principal", principal);
 		return map;
 	}
 
@@ -90,7 +91,8 @@ public class BoardController {
 	// 등록 요청
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	@ResponseBody
-	public void insert(@RequestBody BoardVO vo) {
+	public void insert(@RequestBody BoardVO vo, Principal principal) {
+		vo.setId(principal.getName());
 		service.insertBoard(vo);
 	}
 
@@ -121,7 +123,7 @@ public class BoardController {
 
 	// 글보기 진입
 	@RequestMapping(value = "/view/{seq}", method = RequestMethod.GET)
-	public String view(@PathVariable int seq, Model model) {
+	public String view(@PathVariable int seq, Model model, Principal principal) {
 		service.updateViewCount(seq);
 		BoardVO bo = service.selectBoardOne(seq);
 		List<CommentVO> co = service.selectComments(seq);
@@ -137,13 +139,15 @@ public class BoardController {
 		model.addAttribute("vo", bo);
 		model.addAttribute("co", co);
 		model.addAttribute("coCount", co.size()+so.size());
+		model.addAttribute("principal", principal);
 		return "view";
 	}
 
 	// 댓글 작성
 	@RequestMapping(value = "/comment/write", method = RequestMethod.POST)
 	@ResponseBody
-	public void insertComment(@RequestBody CommentVO vo) {
+	public void insertComment(@RequestBody CommentVO vo, Principal principal) {
+		vo.setId(principal.getName());
 		service.insertComment(vo);
 	}
 
@@ -151,8 +155,8 @@ public class BoardController {
 
 	@RequestMapping(value = "/subComment/write", method = RequestMethod.POST)
 	@ResponseBody
-	public void insertSubComment(@RequestBody CommentVO vo) {
-		System.out.println(vo);
+	public void insertSubComment(@RequestBody CommentVO vo, Principal principal) {
+		vo.setId(principal.getName());
 		service.insertSubComment(vo);
 	}
 
