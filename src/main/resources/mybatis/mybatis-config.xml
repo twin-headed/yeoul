@@ -17,6 +17,7 @@
          <typeAlias type="com.myapp.vo.BoardVO" alias="BoardVO"/>
         <typeAlias type="com.myapp.vo.MemberVO" alias="MemberVO"/>
         <typeAlias type="com.myapp.vo.CommentVO" alias="CommentVO"/>
+        <typeAlias type="com.myapp.vo.LinkVO" alias="LinkVO"/>
     </typeAliases>    
   
 </configuration>

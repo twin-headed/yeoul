@@ -131,12 +131,34 @@
 		id, gameId, password, role
 		)
 		values (
-		#{id}, #{gameId}, #{password}, 'VIP'
+		#{id}, #{gameId}, #{password}, 'USER'
 		)
 	</insert>
 
 	<select id="checkMember" parameterType="java.lang.String" resultType="MemberVO">
 		select * from member where id = #{id}
 	</select>
+
+	<select id="selectMember" resultType="MemberVO">
+		select * from member where role != 'ADMIN'
+	</select>
+
+	<select id="selectLink" resultType="LinkVO">
+		select * from link where pk = 0
+	</select>
+
+	<update id="updateCommunity" parameterType="java.lang.String">
+		update link set community = #{community} where pk = 0
+	</update>
+
+	<update id="updateDownload" parameterType="java.lang.String">
+		update link set download = #{download} where pk = 0
+	</update>
+
+	<update id="updateRole" parameterType="MemberVO">
+		update member
+			set role = #{role}
+		where id = #{id}
+	</update>
     
 </mapper>

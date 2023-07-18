@@ -1,29 +1,20 @@
 package com.myapp.controller;
 
 import com.myapp.service.AccountService;
-import com.myapp.service.BoardService;
 import com.myapp.service.MemberService;
-import com.myapp.vo.BoardVO;
-import com.myapp.vo.CommentVO;
 import com.myapp.vo.MemberVO;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,5 +79,11 @@ public class MemberController {
 			map.put("result", "fail");
 		}
 		return map;
+	}
+
+	@RequestMapping(value="/update/role", method = RequestMethod.POST)
+	@ResponseBody
+	public void updateRole(@RequestBody MemberVO vo) {
+		memberService.updateRole(vo);
 	}
 }

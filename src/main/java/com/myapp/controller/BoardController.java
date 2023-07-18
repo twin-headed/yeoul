@@ -1,38 +1,24 @@
 package com.myapp.controller;
 
-import java.io.StringWriter;
-import java.lang.reflect.Array;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.servlet.http.HttpServletRequest;
-
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.myapp.service.BoardService;
+import com.myapp.service.ManageService;
+import com.myapp.vo.BoardVO;
 import com.myapp.vo.CommentVO;
+import com.myapp.vo.LinkVO;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.myapp.service.BoardService;
-import com.myapp.vo.BoardEntity;
-import com.myapp.vo.BoardVO;
-import com.samskivert.mustache.Mustache;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Handles requests for the application home page.
@@ -43,12 +29,16 @@ import com.samskivert.mustache.Mustache;
 public class BoardController {
 
 	private final BoardService service;
+	private final ManageService manageService;
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	//최초 진입시
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String list() {
+	public String list(Model model) {
+		LinkVO link = manageService.selectLink();
+		model.addAttribute("community", link.getCommunity());
+		model.addAttribute("download", link.getDownload());
 		return "board";
 	}
 
@@ -83,6 +73,9 @@ public class BoardController {
 	// 등록 페이지 진입
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write(Model model) {
+		LinkVO link = manageService.selectLink();
+		model.addAttribute("community", link.getCommunity());
+		model.addAttribute("download", link.getDownload());
 		model.addAttribute("flag", "save");
 		model.addAttribute("value", "저장");
 		return "write";
@@ -124,6 +117,9 @@ public class BoardController {
 	// 글보기 진입
 	@RequestMapping(value = "/view/{seq}", method = RequestMethod.GET)
 	public String view(@PathVariable int seq, Model model, Principal principal) {
+		LinkVO link = manageService.selectLink();
+		model.addAttribute("community", link.getCommunity());
+		model.addAttribute("download", link.getDownload());
 		service.updateViewCount(seq);
 		BoardVO bo = service.selectBoardOne(seq);
 		List<CommentVO> co = service.selectComments(seq);

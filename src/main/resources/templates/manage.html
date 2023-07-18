@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>User List</title>
+    <script src="/resources/js/jquery-3.1.1.js"></script>
+</head>
+<body>
+<h1>User List</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>아이디</th>
+        <th>인게임 아이디</th>
+        <th>인증여부</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="member: ${members}">
+            <td th:text="${member.getId()}"></td>
+            <td th:text="${member.getGameId()}"></td>
+            <td>
+                <input type="checkbox" th:onchange="updateRole(this,[[${member.getId()}]]);" th:checked="${member.getRole() == 'VIP'}" />
+            </td>
+        </tr>
+    <!-- 추가적인 유저들을 여기에 추가할 수 있습니다 -->
+    </tbody>
+</table>
+
+<h1>커뮤니티 주소갱신</h1>
+<input id="community" th:value="${link.getCommunity()}">
+<button onclick="updateCommunity()">갱신</button>
+
+<h1>자료실 주소갱신</h1>
+<input id="download" th:value="${link.getDownload()}">
+<button onclick="updateDownload()">갱신</button>
+
+<script>
+    $(document).ready(function(){
+
+    });
+
+    function updateRole(tis,id) {
+        var data;
+
+        if(tis.checked) {
+            if(confirm("인증상태로 전환하겠습니까?")) {
+                data = {
+                    role : 'VIP',
+                    id : id
+                }
+                $.ajax({
+                    data : JSON.stringify(data),
+                    type : "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    url : "/member/update/role",
+                    success : function(response) {
+                        alert("인증전환!");
+                        document.location.reload();
+                    }
+                    ,error:function(request,status,error, data){
+                        alert("인증전환 실패!");
+                    }
+                });
+            }else {
+                tis.checked = false;
+            }
+        }else {
+            if(confirm("비인증상태로 전환하겠습니까?")) {
+                data = {
+                    role : 'USER',
+                    id : id
+                }
+                $.ajax({
+                    data : JSON.stringify(data),
+                    type : "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    url : "/member/update/role",
+                    success : function(response) {
+                        alert("비인증전환!");
+                        document.location.reload();
+                    }
+                    ,error:function(request,status,error, data){
+                        alert("비인증전환 실패!");
+                    }
+                });
+            }else {
+                tis.checked = true;
+            }
+        }
+    }
+
+    function updateCommunity() {
+
+        $.ajax({
+            data : {community : $("#community").val()},
+            type : "POST",
+            url : "/manage/update/community",
+            success : function(response) {
+                alert("수정!");
+            }
+            ,error:function(request,status,error, data){
+                alert("수정실패!");
+            }
+        });
+    }
+
+    function updateDownload() {
+
+        $.ajax({
+            data : {download : $("#download").val()},
+            type : "POST",
+            url : "/manage/update/download",
+            success : function(response) {
+                alert("수정!");
+            }
+            ,error:function(request,status,error, data){
+                alert("수정실패!");
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

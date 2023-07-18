@@ -198,12 +198,12 @@ textarea#wr_content {
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li><span class="hlavny_"><a
-								href="https://t.me/yeoulbaramchat">커뮤니티(단톡방)</a></span></li>
+								th:href="${community}">커뮤니티(단톡방)</a></span></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li><span class="hlavny_"><a
-								href="https://www.mediafire.com/file/jncheucvpbyfs8t/%255B21.12.10%255D_Yeoulserver.zip/file">자료실(다운로드)
+								th:href="${download}">자료실(다운로드)
 							</a></span></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
@@ -251,7 +251,7 @@ textarea#wr_content {
 							</header>
 							
 							<div class="bo_vc_content"><br th:text="${item.content}"></div>
-							<footer sec:authorize="hasRole('VIP')">
+							<footer sec:authorize="hasRole('VIP') or hasRole('ADMIN')">
 								<ul class="bo_vc_act">
 									<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>
 								 </ul>
@@ -268,7 +268,7 @@ textarea#wr_content {
 								</header>
 
 								<div class="bo_vc_content"><br th:text="${subComment.content}"></div>
-								<footer sec:authorize="hasRole('VIP')">
+								<footer sec:authorize="hasRole('VIP') or hasRole('ADMIN')">
 									<ul class="bo_vc_act">
 										<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>
 									</ul>
@@ -282,7 +282,7 @@ textarea#wr_content {
 							</div>
 						</div>
 
-						<aside sec:authorize="hasRole('VIP')">
+						<aside sec:authorize="hasRole('VIP') or hasRole('ADMIN')">
 							<div class="comment_form">
 								<div style="height:150px" class="write_body">
 									<div class="no_editor">

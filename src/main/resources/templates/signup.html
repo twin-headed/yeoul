@@ -203,13 +203,13 @@
     let giField = document.querySelector("#gameId");
     let pField = document.querySelector("#password");
     let p2Field = document.querySelector("#password2");
-    const regex = /^[a-zA-Z]+$/;
+    const regex = /^[a-zA-Z][a-zA-Z0-9]*$/;
     const kRegex = /^[가-힣]+$/;
 
     iField.addEventListener('keydown', (e) => {
        if(e.key === 'Tab') {
            if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
-               iField.nextElementSibling.innerText = '* 4자리 이상의 영문아이디를 입력해주세요.';
+               iField.nextElementSibling.innerText = '* 4자리 이상의 영문 + 숫자아이디를 입력해주세요.';
                iField.nextElementSibling.style.visibility = "visible";
            }
        }else {
@@ -218,7 +218,7 @@
     });
     iField.addEventListener('blur', (e) => {
         if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
-            iField.nextElementSibling.innerText = '* 4자리 이상의 영문아이디를 입력해주세요.';
+            iField.nextElementSibling.innerText = '* 4자리 이상의 영문 + 숫자아이디를 입력해주세요.';
             iField.nextElementSibling.style.visibility = "visible";
         }else {
             iField.nextElementSibling.style.visibility = "hidden";
@@ -290,7 +290,7 @@
         var password2 = $("#password2").val();
 
         if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
-            alert('4자리 이상의 영문아이디를 입력해주세요.');
+            alert('4자리 이상의 영문 + 숫자아이디를 입력해주세요.');
             $("#id").focus();
             return false;
         }

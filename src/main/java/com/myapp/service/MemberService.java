@@ -1,13 +1,10 @@
 package com.myapp.service;
 
-import com.myapp.vo.BoardVO;
-import com.myapp.vo.CommentVO;
 import com.myapp.vo.MemberVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Member;
 import java.util.List;
 
 @Service
@@ -29,4 +26,11 @@ public class MemberService {
 		sqlQuery.insert("insertMember",vo);
 	}
 
+	public List<MemberVO> selectMember() {
+		return sqlQuery.selectList("selectMember");
+	}
+
+	public void updateRole(MemberVO vo) {
+		sqlQuery.update("updateRole", vo);
+	}
 }
