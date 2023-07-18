@@ -1,3 +1,4 @@
+/*
 package com.myapp;
 
 import org.springframework.context.annotation.Configuration;
@@ -22,3 +23,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             .withSockJS(); // SockJS 사용
     }
 }
+*/
