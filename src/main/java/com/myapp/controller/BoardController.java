@@ -35,10 +35,12 @@ public class BoardController {
 
 	//최초 진입시
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String list(Model model) {
+	public String list(Model model, Principal principal) {
 		LinkVO link = manageService.selectLink();
 		model.addAttribute("community", link.getCommunity());
 		model.addAttribute("download", link.getDownload());
+		model.addAttribute("principal", principal);
+		System.out.println("principal :" + principal);
 		return "board";
 	}
 

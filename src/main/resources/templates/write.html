@@ -1,5 +1,6 @@
 <html>
 <head>
+	<title>여울서버</title>
 <link rel="stylesheet" href="/resources/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" media="screen, projection"
 	href="/resources/css/menu.css">
@@ -113,10 +114,10 @@ div.wrap1 .wrap2 {
 	</div>
 	<script th:inline="javascript">
 
-		let seq = /*[[${seq}]]*/ '';
-		let title = /*[[${title}]]*/ '';
-		let content = /*[[${content}]]*/ '';
-		let flag = /*[[${flag}]]*/ '';
+		const seq = /*[[${seq}]]*/ '';
+		const title = /*[[${title}]]*/ '';
+		const content = /*[[${content}]]*/ '';
+		const flag = /*[[${flag}]]*/ '';
 
 		$(document).ready(function() {
 			  $('.summernote').summernote({

@@ -160,4 +160,9 @@ ul#categories li a:hover {
 	background-color:#e4d0c7;
 }
 
+@font-face { /* 애플산돌고딕 폰트 적용 */
+	font-family: "SDGothic";
+	src: url("NanumBrush.ttf") format("truetype");
+} /*
+
 -->

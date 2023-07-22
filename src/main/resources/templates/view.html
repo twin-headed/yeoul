@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
+	<title>여울서버</title>
 <link rel="stylesheet" href="/resources/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" media="screen, projection"
 	href="/resources/css/menu.css">
@@ -325,13 +326,13 @@ textarea#wr_content {
 	</template>
 	<script th:inline="javascript">
 
-		let seq = /*[[${vo.seq}]]*/ '';
-		let title = /*[[${vo.title}]]*/ '';
-		let content = /*[[${vo.content}]]*/ '';
-		let id = /*[[${vo.id}]]*/ '';
-		let principal = /*[[${principal}]]*/ '';
-		let name = principal !== null? principal.name : '';
-		let authority = principal !== null? principal.authorities[0].authority : '';
+		const seq = /*[[${vo.seq}]]*/ '';
+		const title = /*[[${vo.title}]]*/ '';
+		const content = /*[[${vo.content}]]*/ '';
+		const id = /*[[${vo.id}]]*/ '';
+		const principal = /*[[${principal}]]*/ '';
+		const name = principal !== null? principal.name : '';
+		const authority = principal !== null? principal.authorities[0].authority : '';
 
 		$(document).ready(function() {
 			  $('.summernote').summernote({
