@@ -1,0 +1,2 @@
+User-agent: *Allow:/
+Sitemap: http://www.yeoulserver.com/sitemap.xml

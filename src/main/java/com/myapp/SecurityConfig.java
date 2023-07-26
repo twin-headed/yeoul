@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .mvcMatchers("/","/member/login", "/member/signup","/member/insert","/board/list", "/board/view/{seq}", "/resources/img/*","/resources/js/*","/resources/css/*","/resources/summerNote/*" )
+                .mvcMatchers("/","/member/login", "/member/signup","/member/insert","/board/list", "/board/view/{seq}", "/resources/img/*","/resources/js/*","/resources/css/*","/resources/summerNote/*","/robots.txt", "/sitemap.xml")
                 .permitAll()
                 .mvcMatchers("/board/write", "/board/update", "/board/delete/", "/board/insert", "/board/modify", "/board/delete/{seq}", "/board/comment/write", "/board/subComment/write", "/upload")
                 .hasAnyRole("VIP", "ADMIN")
