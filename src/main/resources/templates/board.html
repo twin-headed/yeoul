@@ -386,7 +386,7 @@ select, option {
 						<div class="scroll-tab"></div>
 					</div>
 				</div>
-				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 674px;">
+				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 700px;">
 					<p th:text="${category == 1}? '&lt;퀘스트공략&gt' : '&lt;나만의팁&gt;' "
 					   style="
 					cursor: default;
@@ -474,6 +474,7 @@ select, option {
 		const name = principal !== null? principal.name : '';
 		const authority = principal !== null? principal.authorities[0].authority : '';
 		const category = /*[[${category}]]*/ '';
+		const activeNames = /*[[${activeNames}]]*/ '';
 
 		$(document).ready(function(){
 			selectBoardList(1);
