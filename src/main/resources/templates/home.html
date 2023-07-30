@@ -143,8 +143,83 @@
 			display: none;
 		}
 
+		.speech-bubble {
+			display: none;
+			position: relative;
+			width: 145px;
+			padding: 10px;
+			background-color: #fff;
+			border: 1px solid #0000003d;;
+			border-radius: 20px; /* 테두리의 곡률을 더 높임 */
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+			margin-top: -5px;
+			margin-left: 7px;
+		}
 
+		.speech-bubble:after {
+			content: '';
+			position: absolute;
+			bottom: 100%;
+			left: 50%;
+			margin-left: -10px;
+			border-width: 10px;
+			border-style: solid;
+			border-color: transparent transparent #ffc10736 transparent;
+		}
 
+		.outer-box {
+			padding: 20px;
+			text-align: center;
+			max-height: 300px;
+			overflow: hidden;
+			position: relative; /* 추가된 부분 */
+		}
+
+		.outer-box::before {
+			content: "접속멤버";
+			display: block;
+			font-size: 14px;
+			font-weight: bold;
+			margin-bottom: 10px;
+			text-align: left;
+			margin-left: 4px;
+		}
+
+		.square-box {
+			position: relative;
+			width: 150px;
+			background-color: rgba(0, 0, 0, 0.125);
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			white-space: nowrap;
+			overflow-x: auto; /* 추가된 부분 */
+			max-height: 112px;
+			min-height: 112px;
+			margin-left: 2px;
+		}
+
+		.user {
+			font-size: 12px;
+			text-align: left;
+			padding: 10px;
+			padding-left: 15px;
+			cursor: default;
+		}
+
+		.scroll-tab {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 10px;
+			height: 100%;
+			background-color: #bdc3c7;
+			cursor: pointer;
+			display: none; /* 추가된 부분 */
+		}
+
+		.scroll-tab:hover {
+			background-color: #95a5a6;
+		}
 	</style>
 	<script src="/resources/js/jquery-3.1.1.js"></script>
 </head>
@@ -178,8 +253,16 @@
 					<li><img src="/resources/img/divider2.png" alt=""></li>
 					<li></li>
 					<li><img src="/resources/img/divider2.png" alt=""></li>
-					<li><span class="hlavny_"><a href="/board/list">공략게시판
-							</a></span></li>
+					<li>
+						<span class="hlavny_" style="padding-left:0px; padding-right:0px; width:175px;">
+							<a style="height:30px;" href="javascript:void(0)" onmouseover="showBubble()" onmouseout="hideBubble()" >공략게시판</a>
+							<div class="speech-bubble" onmouseover="showBubble()" onmouseout="hideBubble()">
+								<p style="display:inline-block"><a href="/board/list?category=1" onmouseover="onHover(this)" onmouseout="outHover(this)" id="quest" style="color:black; cursor: pointer; text-decoration: none;">퀘스트공략</a></p>
+								&nbsp&nbsp
+								<p style="display:inline-block"><a href="/board/list?category=2" onmouseover="onHover(this)" onmouseout="outHover(this)" id="tip" style="color:black; cursor: pointer; text-decoration: none;">나만의팁</a></p>
+							</div>
+						</span>
+					</li>
 					<li><img src="/resources/img/divider2.png" alt=""></li>
 					<li><img src="/resources/img/divider2.png" alt=""></li>
 					<li sec:authorize="hasRole('ADMIN')"><span class="hlavny_" onclick="window.open('/manage/page', 'a', 'width=700, height=600, left=800, top=100')"><a href="javascript:void(0)">관리팝업
@@ -214,7 +297,7 @@
 			<br><br>
 			<div style="font-family: 'SDGothic', serif; font-size: 20px;
 			font-weight: bold; color:black;
-			"><br><br><br>
+			"><br>
 			<div class="header" style="text-align: center; cursor:default">여울서버는 어떤곳인가요?</div>
 			<div class="text" style="text-align: center; cursor:default">
 				경험치 배율:
@@ -227,13 +310,40 @@
 				<br> 서버 안정성: 100%
 				<br>Made by 아기사자
 			</div>
-
+			</div>
+			<br>
+			<div class="outer-box">
+				<div class="square-box">
+					<div class="user" th:each="user : ${activeNames}" th:text="${user}"></div>
+				</div>
+				<div class="scroll-tab"></div>
 			</div>
 		</div>
 	</div>
 	<div style="text-align: center;">구버전 프리 바람의나라-Renewal By Yeoulserver</div>
 </div>
-<script>
+<script th:inline="javascript">
+	const activeSessions = /*[[${activeSessions}]]*/ '';
+	const activeNames = /*[[${activeNames}]]*/ '';
+
+	function showBubble() {
+		const bubble = document.querySelector('.speech-bubble');
+		bubble.style.display = 'block';
+	}
+
+	function hideBubble() {
+		const bubble = document.querySelector('.speech-bubble');
+		bubble.style.display = 'none';
+	}
+
+	function onHover(tis) {
+		tis.style.color = '#a66347';
+	}
+
+	function outHover(tis) {
+		tis.style.color = 'black';
+	}
+
 	$("#login").on("click",function() {
 
 		if(document.querySelector("#id").value.trim() === '' || document.querySelector("#password").value.trim() === '') {

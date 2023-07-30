@@ -12,7 +12,11 @@ public class BoardVO {
 	private String registDate;
 	private String modifyDate;
 	private String deleteYn;
+	private String noticeYn;
 	private int viewCount;
+	private int category;
+
+
 	private int commentCount;
 
 	private int rowNum;

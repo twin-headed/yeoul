@@ -1,5 +1,6 @@
 package com.myapp.controller;
 
+import com.myapp.SessionListener;
 import com.myapp.service.ManageService;
 import com.myapp.vo.LinkVO;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,13 @@ public class HomeController {
 	private final ManageService manageService;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {
 		logger.info("{}","enterd home");
 		LinkVO link = manageService.selectLink();
+		model.addAttribute("activeSessions", SessionListener.getActiveSessions() + 1);
+		model.addAttribute("activeNames", SessionListener.getActiveNames());
 		model.addAttribute("community", link.getCommunity());
 		model.addAttribute("download", link.getDownload());
 		return "home";

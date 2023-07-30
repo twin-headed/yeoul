@@ -179,6 +179,31 @@ textarea#wr_content {
 <script src="/resources/summerNote/summernote-lite.js"></script>
 <script src="/resources/summerNote/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="/resources/summerNote/summernote-lite.css">
+	<style>
+		.speech-bubble {
+			display: none;
+			position: relative;
+			width: 145px;
+			padding: 10px;
+			background-color: #fff;
+			border: 1px solid #0000003d;;
+			border-radius: 20px; /* 테두리의 곡률을 더 높임 */
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+			margin-top: -5px;
+			margin-left: 7px;
+		}
+
+		.speech-bubble:after {
+			content: '';
+			position: absolute;
+			bottom: 100%;
+			left: 50%;
+			margin-left: -10px;
+			border-width: 10px;
+			border-style: solid;
+			border-color: transparent transparent #ffc10736 transparent;
+		}
+	</style>
 </head>
 <body>
 	<div class="wrap1">
@@ -209,8 +234,16 @@ textarea#wr_content {
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
-						<li><span class="hlavny_"><a href="/board/list">공략게시판
-							</a></span></li>
+						<li>
+							<span class="hlavny_" style="padding-left:0px; padding-right:0px; width:175px;">
+								<a style="height:30px;" href="javascript:void(0)" onmouseover="showBubble()" onmouseout="hideBubble()" >공략게시판</a>
+								<div class="speech-bubble" onmouseover="showBubble()" onmouseout="hideBubble()">
+									<p style="display:inline-block"><a href="/board/list?category=1" onmouseover="onHover(this)" onmouseout="outHover(this)" id="quest" style="color:black; cursor: pointer; text-decoration: none;">퀘스트공략</a></p>
+									&nbsp&nbsp
+									<p style="display:inline-block"><a href="/board/list?category=2" onmouseover="onHover(this)" onmouseout="outHover(this)" id="tip" style="color:black; cursor: pointer; text-decoration: none;">나만의팁</a></p>
+								</div>
+							</span>
+						</li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li class="active"></li>
 					</ul>
@@ -333,6 +366,7 @@ textarea#wr_content {
 		const principal = /*[[${principal}]]*/ '';
 		const name = principal !== null? principal.name : '';
 		const authority = principal !== null? principal.authorities[0].authority : '';
+		const category = /*[[${category}]]*/ '';
 
 		$(document).ready(function() {
 			  $('.summernote').summernote({
@@ -344,7 +378,25 @@ textarea#wr_content {
 						}
 					}
 			  });
-		})
+		});
+
+		function showBubble() {
+			const bubble = document.querySelector('.speech-bubble');
+			bubble.style.display = 'block';
+		}
+
+		function hideBubble() {
+			const bubble = document.querySelector('.speech-bubble');
+			bubble.style.display = 'none';
+		}
+
+		function onHover(tis) {
+			tis.style.color = '#a66347';
+		}
+
+		function outHover(tis) {
+			tis.style.color = 'black';
+		}
 		
 		function uploadSummernoteImageFile(file, editor) {
 			var data = new FormData();
@@ -408,7 +460,7 @@ textarea#wr_content {
 		});
 
 		/* 조회자가 해당글의 주인일시 추가하는 로직필요 */
-		if(id === name && authority === "ROLE_VIP") {
+		if((id === name && authority === "ROLE_VIP") || (id === name && authority === "ROLE_ADMIN")) {
 			$('#utext').after(
 					'<div style="text-align:right">' +
 					'<button id="modify" type="button" class="btn btn-dark btn-sm" id="modify" style="margin-bottom: 5px; margin-right: 5px;">수정</button>' +
@@ -423,11 +475,12 @@ textarea#wr_content {
 			var data = {
 				seq : seq,
 				title : title,
-				content : content
+				content : content,
+				category : category
 			}
 			var form = document.createElement("form");
 			form.method = "POST";
-			form.action = "/board/modify"; // 실제 요청을 처리할 경로
+			form.action = "/board/modify" // 실제 요청을 처리할 경로
 			// JSON 데이터를 문자열로 변환하여 input 요소에 담음
 			var jsonDataInput = document.createElement("input");
 			jsonDataInput.type = "hidden";
@@ -449,7 +502,7 @@ textarea#wr_content {
 				url : "/board/delete/"+seq,
 				success : function(response) {
 					alert("삭제성공!");
-					location.href = "/board/list";
+					location.href = "/board/list?category="+category;
 				}
 				,error:function(request,status,error, data){
 					alert("삭제실패!");

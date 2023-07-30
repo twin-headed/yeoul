@@ -15,10 +15,12 @@
 		, b.viewCount
 		, c.commentCount
 		, row_number() over() as rowNum
+		, b.noticeYn
 		from board b
 		left join (select count(*) as commentCount, boardSeq from comment group by boardSeq) c
 		on b.seq = c.boardSeq
 		where deleteYn = 'N'
+		and category = #{category}
         <choose>
         	<when test='title != null and content != null'>
         		and b.title like "%${content}%" ||  b.content like "%${content}%"
@@ -33,7 +35,7 @@
         		and b.id like "%${id}%"
         	</when>        	
         </choose>
-        	order by b.seq desc
+        	order by b.noticeYn desc, b.seq desc
         	limit #{pagePerNum} offset #{offset}
     </select>
       
@@ -42,6 +44,7 @@
     		count(*)
     	from board
     	where deleteYn = 'N'
+		and category = #{category}
         <choose>
         	<when test='title != null and content != null'>
         		and title like "%${content}%" ||  content like "%${content}%"
@@ -57,7 +60,7 @@
         	</when>        	
         </choose>
     </select>
-    
+
     <select id="selectBoardOne" resultType="BoardVO" parameterType="int">
     	select * 
     		from board 
@@ -72,10 +75,10 @@
     
     <insert id="insertBoard" parameterType="BoardVO">
     	insert into board (
-    			title,content,id,registDate,modifyDate,deleteYn
+    			title,content,id,registDate,modifyDate,deleteYn, noticeYn, category
     		) 
     		values (
-    			#{title},#{content},#{id},now(),now(),'N'
+    			#{title},#{content},#{id},now(),now(),'N',#{noticeYn}, #{category}
     		)
     </insert>
     

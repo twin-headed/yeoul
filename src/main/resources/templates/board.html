@@ -4,7 +4,7 @@
 	<title>여울서버</title>
 <link rel="stylesheet" href="/resources/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" media="screen, projection"
-	href="/resources/css/menu.css">
+	href="/resources/css/menu.css?after">
 <link rel="stylesheet" type="text/css" media="screen, projection"
 	href="/resources/css/style.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@ div.wrap1 .wrap2 {
     */
     display: table;
     font-size:11px;
-    font-family:"맑은 고딕","Malgun Gothic";
+    font-family:"맑은 고딕","NanumGothicBold";
     margin:0 auto;
     margin-top:3%;
 }
@@ -63,7 +63,7 @@ div.wrap1 .wrap2 {
 }
 
 .table-hover tbody tr:hover td {
-    background: #fff2e6;
+    background: none; !important;
 }
 
 .page-link {
@@ -222,6 +222,77 @@ select, option {
 	background-color: #7b3e0a;
 }
 
+.pagination li {
+	margin-right: 5px;
+}
+
+.table {
+	--bs-table-hover-bg: none;
+}
+
+.speech-bubble {
+	display: none;
+	position: relative;
+	width: 145px;
+	padding: 10px;
+	background-color: #fff;
+	border: 1px solid #0000003d;;
+	border-radius: 20px; /* 테두리의 곡률을 더 높임 */
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+	margin-top: -5px;
+	margin-left: 7px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -10px;
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent #ffc10736 transparent;
+}
+
+.outer-box {
+	padding: 20px;
+	text-align: center;
+	max-height: 300px;
+	overflow: hidden;
+	position: relative; /* 추가된 부분 */
+}
+
+.outer-box::before {
+	content: "접속멤버";
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	text-align: left;
+	margin-left: 4px;
+}
+
+.square-box {
+	position: relative;
+	width: 150px;
+	background-color: rgba(0, 0, 0, 0.125);
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	white-space: nowrap;
+	overflow-x: auto; /* 추가된 부분 */
+	max-height: 112px;
+	min-height: 112px;
+	margin-left: 2px;
+}
+
+.user {
+	font-size: 12px;
+	text-align: left;
+	padding: 10px;
+	padding-left: 15px;
+	cursor: default;
+}
+
 </style>
 <script src="/resources/js/jquery-3.1.1.js"></script>
 </head>
@@ -254,8 +325,16 @@ select, option {
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
-						<li><span class="hlavny_"><a href="/board/list">공략게시판
-							</a></span></li>
+						<li>
+							<span class="hlavny_" style="padding-left:0px; padding-right:0px; width:175px;">
+								<a style="height:30px;" href="javascript:void(0)" onmouseover="showBubble()" onmouseout="hideBubble()" >공략게시판</a>
+								<div class="speech-bubble" onmouseover="showBubble()" onmouseout="hideBubble()">
+									<p style="display:inline-block"><a href="/board/list?category=1" onmouseover="onHover(this)" onmouseout="outHover(this)" id="quest" style="color:black; cursor: pointer; text-decoration: none;">퀘스트공략</a></p>
+									&nbsp&nbsp
+									<p style="display:inline-block"><a href="/board/list?category=2" onmouseover="onHover(this)" onmouseout="outHover(this)" id="tip" style="color:black; cursor: pointer; text-decoration: none;">나만의팁</a></p>
+								</div>
+							</span>
+						</li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li class="active"></li>
 					</ul>
@@ -284,28 +363,48 @@ select, option {
 						</span>
 						<img onclick="logout();" style="width:15px; height:15px; cursor: pointer; margin-left:10px;" src="/resources/img/logout.png">
 					</div>
-					<br><br><br><br><br>
-					<!--
-					<div>여울서버는 어떤곳인가요?</div>
-					<div>
-						<br>안녕하세요.여울GM입니다.<br> 경험치 보정배율 서버입니다.<br> 서버는 24시간
-						상시 ON입니다.<br> 오래 운영할테니 많이 찾아주세요.<br> <br>감사합니다.<br>
-						<br> <br>서버오픈일 2020.12.24
+					<div style="font-family: 'SDGothic', serif; font-size: 20px;
+							font-weight: bold; color:black;
+							"><br><br>
+						<div class="header" style="text-align: center; cursor:default">여울서버는 어떤곳인가요?</div>
+						<div class="text" style="text-align: center; cursor:default">
+							경험치 배율:
+							<br> 1차 승급기준전까지 5배
+							<br>2차 승급기준전까지 4배
+							<br>3차 승급기준전까지 3배
+							<br>4차 승급기준전까지 2배
+							<br>4차 승급기준달성시 1배
+							<br>서버 구현률: 100%
+							<br> 서버 안정성: 100%
+							<br>Made by 아기사자
+						</div>
 					</div>
-					<h2>
-						경험치 배율: <br>1배 -> 보정배율 변경<br> <br> <br> 서버
-						구현률: 100%<br> 서버 안정성: 100%<br> <br> <br>Made
-						by 아기사자
-					</h2>
-					-->
+					<div class="outer-box">
+						<div class="square-box">
+							<div class="user" th:each="user : ${activeNames}" th:text="${user}"></div>
+						</div>
+						<div class="scroll-tab"></div>
+					</div>
 				</div>
 				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 674px;">
-					<table class="table table-hover fz_board">
+					<p th:text="${category == 1}? '&lt;퀘스트공략&gt' : '&lt;나만의팁&gt;' "
+					   style="
+					cursor: default;
+					display: inline-block;
+					margin-top: 20px;
+					margin-left: 30px;
+					margin-bottom: 0px;
+					font-weight: bold;
+					font-size: 24px;
+					font-family: 'SDGothic', serif;
+    				letter-spacing: 2px;">
+					</p>
+					<table style="margin-top: 5px;" class="table table-hover fz_board">
 						<colgroup>
-					        <col width="10%">
-					        <col width="50%">
-					        <col width="20%">
-					        <col width="10%">
+					        <col width="8%">
+					        <col width="60%">
+					        <col width="17%">
+					        <col width="8%">
 					        <col width="10%">
 					    </colgroup>
 						<thead>
@@ -317,7 +416,7 @@ select, option {
 								<th>조회수</th>
 							</tr>
 						</thead>
-						<tbody id="list">
+						<tbody id="list" style="font-size:12px;">
 						</tbody>
 						<!--
 						<tbody id="list" th:if="${list != null}">
@@ -333,12 +432,26 @@ select, option {
 					</table>
 					<br>
 					<div>
-						<ul class="pagination justify-content-center" id="paging">
-						  </ul>
+						<div class="row justify-content-between align-items-center">
+							<div class="col-auto" style="width: 5%;">
+								<!-- 왼쪽 20%의 공간 -->
+							</div>
+							<div class="col-auto">
+								<ul class="pagination pagination-sm" id="paging">
+								</ul>
+							</div>
+							<div class="col-auto" style="width: 14.6%;">
+								<ul sec:authorize="hasRole('VIP') or hasRole('ADMIN')" class="pagination" style="float: right; margin-right: 33px;">
+									<li class="page-item">
+										<a class="page-link" th:href="'/board/write?category=' + ${category}">글쓰기
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</div>
-					
 					<div style="margin-bottom:10px;">
-						<select id="select" style="margin-left:25%; height:24.5px; width:70px;">
+						<select id="select" style="margin-left:25%; height:22.5px; width:70px; border: 1px solid #a66347;">
 						  <option value="1" selected>제목</option>
 						  <option value="2">작성자</option>
 						  <option value="3">내용</option>
@@ -360,10 +473,29 @@ select, option {
 		const principal = /*[[${principal}]]*/ '';
 		const name = principal !== null? principal.name : '';
 		const authority = principal !== null? principal.authorities[0].authority : '';
+		const category = /*[[${category}]]*/ '';
 
 		$(document).ready(function(){
 			selectBoardList(1);
 		})
+
+		function showBubble() {
+			const bubble = document.querySelector('.speech-bubble');
+			bubble.style.display = 'block';
+		}
+
+		function hideBubble() {
+			const bubble = document.querySelector('.speech-bubble');
+			bubble.style.display = 'none';
+		}
+
+		function onHover(tis) {
+			tis.style.color = '#a66347';
+		}
+
+		function outHover(tis) {
+			tis.style.color = 'black';
+		}
 
 		function logout(){
 			if(confirm("로그아웃 하시겠습니까?")) {
@@ -382,7 +514,8 @@ select, option {
 
 		function selectBoardList(page) {
 			var data = {
-					pageNum : page? page : 1,
+					pageNum : page? page : 1
+				   ,category : category
 			}
 			if(!$("#input").val()) {
 				
@@ -412,18 +545,31 @@ select, option {
 					$("#list").empty();
 					$("#paging").empty();
 					var listHtml;
-					if(response.list.length > 0) {
 
+					if(response.list.length > 0) {
 						// 게시글 출력 -> 타임리프로 표기 x
-						for(var i=0; i<response.list.length; i++) {
-							listHtml = '<tr>'
-							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].rowNum + '</p>' + '</td>'
-							listHtml = listHtml + '<td>' + '<a style="text-decoration-line:none" href="/board/view/'+response.list[i].seq+'">' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].title + (response.list[i].commentCount ? ' [' + response.list[i].commentCount + ']' : '') + '</p>' + '</td>'
-							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].id + '</p>' + '</td>'
-							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].registDate + '</p>' + '</td>'
-							listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0;">' + response.list[i].viewCount + '</p>' + '</td>'
-							listHtml = listHtml + '</tr>';
-							$("#list").append(listHtml);
+						for(var i=0; i< response.list.length; i++) {
+							// 공지사항일경우
+							if(response.list[i].noticeYn === 'Y') {
+								listHtml = '<tr style="background-color: #ffdcb861;">'
+								listHtml = listHtml + '<td>' + '<img style="margin-top: 10px; width:15px; height:15px;" src="/resources/img/notice.png"/>' + '</td>'
+								listHtml = listHtml + '<td>' + '<a style="font-weight: bold; display:contents; text-decoration-line:none" href="/board/view/'+response.list[i].seq+'">' + '<p style="margin-top:10px; margin-bottom:0;">' + (response.list[i].title.length > 29? response.list[i].title.slice(0, 29) + "..." : response.list[i].title) + (response.list[i].commentCount ? ' [' + response.list[i].commentCount + ']' : '') + '</p>' + '</td>'
+								listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0; font-weight:bold;">' + response.list[i].id + '</p>' + '</td>'
+								listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0; color:#999;">' + response.list[i].registDate + '</p>' + '</td>'
+								listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0; color:#999;">' + response.list[i].viewCount + '</p>' + '</td>'
+								listHtml = listHtml + '</tr>';
+								$("#list").append(listHtml);
+							// 일반글
+							}else {
+								listHtml = '<tr>'
+								listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0; color:#999; font-size:10px;">' + response.list[i].rowNum + '</p>' + '</td>'
+								listHtml = listHtml + '<td>' + '<a style="display:inline; text-decoration-line:none" href="/board/view/'+response.list[i].seq+'">' + '<p style="margin-top:10px; margin-bottom:0;">' + (response.list[i].title.length > 29? response.list[i].title.slice(0, 29) + "..." : response.list[i].title) + (response.list[i].commentCount ? ' [' + response.list[i].commentCount + ']' : '') + '</p>' + '</td>'
+								listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0; font-weight:bold;">' + response.list[i].id + '</p>' + '</td>'
+								listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0; color:#999;">' + response.list[i].registDate + '</p>' + '</td>'
+								listHtml = listHtml + '<td>' + '<p style="margin-top:10px; margin-bottom:0; color:#999;">' + response.list[i].viewCount + '</p>' + '</td>'
+								listHtml = listHtml + '</tr>';
+								$("#list").append(listHtml);
+							}
 						}
 						// 페이징 출력
 						for(var j=response.startPage; j<=response.endPage; j++) {
@@ -434,7 +580,7 @@ select, option {
 							}
 							// 마지막반복시 페이징처리추가
 							if(j == response.endPage) {
-								if(response.pageNum > 10) {
+								if(response.totalPage > 10) {
 									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList('+ (response.startPage-1) +')">이전</a></li>').prependTo("#paging");
 									$('<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="selectBoardList(1)">&lt;&lt;</a></li>').prependTo("#paging");
 									if(response.totalPage > response.endPage) {
@@ -444,36 +590,12 @@ select, option {
 								}
 							}
 						}
-						if(response.principal.authorities[0].authority === 'ROLE_VIP' || response.principal.authorities[0].authority === 'ROLE_ADMIN') {
-							$("#paging").append('<li class="page-item" style="margin-left:1%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
-						}
 					}else {
 						listHtml = '<tr>'
 						listHtml = listHtml + '<td colspan="5" style="padding: 55px 0 55px 0;">게시물이 없습니다.</td>'
 						listHtml = listHtml + '</tr>';
 						$("#list").append(listHtml);
-						if(response.principal.authorities[0].authority === 'ROLE_VIP' || response.principal.authorities[0].authority === 'ROLE_ADMIN') {
-							$("#paging").append('<li class="page-item" style="margin-left:80%;"><a class="page-link" href="/board/write">글쓰기</a></li>');
-						}
 					}
-					/*
-					if(response.totalBlock < 11) { // 전체 블록이 10개 이하
-						
-					}else{
-						if(response.pageNum > (response.totalBlock - 10) ){ // 현재 페이지가 마지막 블록대역에 속했을때
-							$("#paging").prepend('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList(1)>&lt;&lt;</a></li>');
-							$("#paging").prepend('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+(response.pageNum-1)+')>Previous</a></li>');
-						}else if(response.pageNum < 11){	// 현재 페이지가 11페이지 미만일때
-							$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+(response.pageNum+1)+')">Next</a></li>').appendTo("#paging");
-							$('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+response.totalCnt+')">&gt;&gt;</a></li>').appendTo("#paging");
-						}else { // 나머지 케이스
-							$("#paging").prepend('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList(1)>&lt;&lt;</a></li>');
-							$("#paging").prepend('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+(response.pageNum-1)+')>Previous</a></li>');
-							$("#paging").appendTo('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+(response.pageNum+1)+')>Next</a></li>');
-							$("#paging").appendTo('<li class="page-item"><a class="page-link" href="#" onclick="selectBoardList('+response.totalCnt+')">&gt;&gt;</a></li>');
-						}
-					}
-					*/
 				},
 				error: function() {
 					alert("조회실패!");

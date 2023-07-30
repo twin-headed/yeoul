@@ -17,7 +17,7 @@ public class BoardService {
 	public List<BoardVO> selectBoardlist (BoardVO vo) {
 		return sqlQuery.selectList("selectBoardList", vo);
 	}
-	
+
 	public int selectBoardListCnt(BoardVO vo) {
 		return sqlQuery.selectOne("selectBoardListCnt", vo);
 	}

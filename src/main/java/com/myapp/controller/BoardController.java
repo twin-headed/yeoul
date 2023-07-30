@@ -1,5 +1,6 @@
 package com.myapp.controller;
 
+import com.myapp.SessionListener;
 import com.myapp.service.BoardService;
 import com.myapp.service.ManageService;
 import com.myapp.vo.BoardVO;
@@ -35,11 +36,14 @@ public class BoardController {
 
 	//최초 진입시
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String list(Model model, Principal principal) {
+	public String list(Model model, Principal principal, @RequestParam(required = false) int category) {
 		LinkVO link = manageService.selectLink();
 		model.addAttribute("community", link.getCommunity());
 		model.addAttribute("download", link.getDownload());
 		model.addAttribute("principal", principal);
+		model.addAttribute("category", category);
+		model.addAttribute("activeSessions", SessionListener.getActiveSessions() + 1);
+		model.addAttribute("activeNames", SessionListener.getActiveNames());
 		System.out.println("principal :" + principal);
 		return "board";
 	}
@@ -54,7 +58,6 @@ public class BoardController {
 		vo.setPagePerNum(pageable.getPageSize());
 		// 게시글 조회
 		List<BoardVO> list = service.selectBoardlist(vo);
-		System.out.println(list);
 		// 총 게시글 수 조회
 		int listCnt = service.selectBoardListCnt(vo);
 		// 현재페이지 - 1 / 블록당 페이지수 -> 이걸로 0부터 시작하는 블록의 몇번째 블록인지 파악, 그 후 블록당 페이지수를 곱해주고 1을 더해주는것은 시작페이지는 1, 11, 21 등의 시작 숫자를 맞춰주기 위함임
@@ -74,12 +77,13 @@ public class BoardController {
 
 	// 등록 페이지 진입
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public String write(Model model) {
+	public String write(Model model, @RequestParam(required = false) int category) {
 		LinkVO link = manageService.selectLink();
 		model.addAttribute("community", link.getCommunity());
 		model.addAttribute("download", link.getDownload());
 		model.addAttribute("flag", "save");
 		model.addAttribute("value", "저장");
+		model.addAttribute("category", category);
 		return "write";
 	}
 
@@ -98,6 +102,7 @@ public class BoardController {
 		model.addAttribute("seq", object.getInt("seq"));
 		model.addAttribute("title", object.getString("title"));
 		model.addAttribute("content", object.getString("content"));
+		model.addAttribute("category", object.getInt("category"));
 		model.addAttribute("flag", "modify");
 		model.addAttribute("value", "수정");
 		return "write";
@@ -138,6 +143,7 @@ public class BoardController {
 		model.addAttribute("co", co);
 		model.addAttribute("coCount", co.size()+so.size());
 		model.addAttribute("principal", principal);
+		model.addAttribute("category", bo.getCategory());
 		return "view";
 	}
 
