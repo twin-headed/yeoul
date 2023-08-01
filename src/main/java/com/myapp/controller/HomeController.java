@@ -28,7 +28,7 @@ public class HomeController {
 	public String home(Model model, HttpServletRequest request) {
 		logger.info("{}","enterd home");
 		LinkVO link = manageService.selectLink();
-		model.addAttribute("activeSessions", SessionListener.getActiveSessions() + 1);
+		model.addAttribute("activeSessions", SessionListener.getActiveSessions());
 		model.addAttribute("activeNames", SessionListener.getActiveNames());
 		model.addAttribute("community", link.getCommunity());
 		model.addAttribute("download", link.getDownload());

@@ -42,7 +42,7 @@ public class BoardController {
 		model.addAttribute("download", link.getDownload());
 		model.addAttribute("principal", principal);
 		model.addAttribute("category", category);
-		model.addAttribute("activeSessions", SessionListener.getActiveSessions() + 1);
+		model.addAttribute("activeSessions", SessionListener.getActiveSessions());
 		model.addAttribute("activeNames", SessionListener.getActiveNames());
 		System.out.println("principal :" + principal);
 		return "board";

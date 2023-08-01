@@ -256,7 +256,7 @@ textarea#wr_content {
 					<section id="bo_v_info">
 						<div class="fl">
 							<span class="bo_v_user">
-								<span class="sound_only" style="margin-left:10px;">작성자 : </span><span th:text="${vo.id}"></span>
+								<span class="sound_only" style="margin-left:10px;">작성자 : </span><span style="font-weight: bold; font-size: 12px;" th:text="${vo.id}"></span>
 							</span>
 						</div>
 						<div class="fr">
@@ -279,12 +279,12 @@ textarea#wr_content {
 								<span class="bo_vc_symbol_target" id="c_5124"></span>
 								<div class="f_wrap">
 									<div class="fl">
-										<span class="bo_vc_hdinfo"> <span style="margin-right:10px;" th:text="${item.getId()}"></span> <time th:text="${item.registDate}"></time></span>
+										<span class="bo_vc_hdinfo"> <span style="margin-right:10px; font-size: 15px; font-weight: bold; color: black;" th:text="${item.getId()}"></span> <time th:text="${item.registDate}"></time></span>
 									</div>
 								</div>
 							</header>
 							
-							<div class="bo_vc_content"><br th:text="${item.content}"></div>
+							<div style="font-size: 14px;" class="bo_vc_content"><br th:text="${item.content}"></div>
 							<footer sec:authorize="hasRole('VIP') or hasRole('ADMIN')">
 								<ul class="bo_vc_act">
 									<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>
@@ -296,12 +296,12 @@ textarea#wr_content {
 									<span class="bo_vc_symbol_target"></span>
 									<div class="f_wrap">
 										<div class="fl">
-											<span class="bo_vc_hdinfo"> <span style="margin-right:10px;" th:text="${subComment.getId()}"></span> <time th:text="${subComment.registDate}"></time></span>
+											<span class="bo_vc_hdinfo"> <span style="margin-right:10px; font-size: 15px; font-weight: bold; color: black;" th:text="${subComment.getId()}"></span> <time th:text="${subComment.registDate}"></time></span>
 										</div>
 									</div>
 								</header>
 
-								<div class="bo_vc_content"><br th:text="${subComment.content}"></div>
+								<div style="font-size: 14px;" class="bo_vc_content"><br th:text="${subComment.content}"></div>
 								<footer sec:authorize="hasRole('VIP') or hasRole('ADMIN')">
 									<ul class="bo_vc_act">
 										<a onclick="bringComment(this);" href="javascript:void(0)" style="text-decoration:none; color: #999 !important;">답글달기</a>

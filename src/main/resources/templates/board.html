@@ -263,7 +263,7 @@ select, option {
 }
 
 .outer-box::before {
-	content: "접속멤버";
+	content: "접속멤버 [[${activeSessions}]]명";
 	display: block;
 	font-size: 14px;
 	font-weight: bold;
@@ -283,12 +283,12 @@ select, option {
 	max-height: 112px;
 	min-height: 112px;
 	margin-left: 2px;
+	padding-top: 10px;
 }
 
 .user {
-	font-size: 12px;
+	font-size: 14px;
 	text-align: left;
-	padding: 10px;
 	padding-left: 15px;
 	cursor: default;
 }
@@ -386,7 +386,7 @@ select, option {
 						<div class="scroll-tab"></div>
 					</div>
 				</div>
-				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 700px;">
+				<div class="container" style="width: 75%; float:left; margin-right:0%; padding: 0px 0px 0px 0px; background-color:white; min-height: 710px;">
 					<p th:text="${category == 1}? '&lt;퀘스트공략&gt' : '&lt;나만의팁&gt;' "
 					   style="
 					cursor: default;
