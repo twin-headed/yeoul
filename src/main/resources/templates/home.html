@@ -326,6 +326,34 @@
 	const activeSessions = /*[[${activeSessions}]]*/ '';
 	const activeNames = /*[[${activeNames}]]*/ '';
 
+	document.querySelector("#password").addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') {
+			if(document.querySelector("#id").value.trim() === '' || document.querySelector("#password").value.trim() === '') {
+				alert("아이디 또는 비밀번호를 입력해주세요.");
+				return false;
+			}
+			$.ajax({
+				data : {
+					username: document.querySelector("#id").value,
+					password: document.querySelector("#password").value
+				},
+				type : "POST",
+				url : "/member/login",
+				success : function(response) {
+					console.log(response);
+					if(response.result === 'success') {
+						document.location.reload();
+					} else {
+						alert("아이디 또는 비밀번호가 잘못되었습니다.")
+					}
+				}
+				,error:function(xhr){
+					alert("아이디 또는 비밀번호가 잘못되었습니다.")
+				}
+			});
+		}
+	});
+
 	function showBubble() {
 		const bubble = document.querySelector('.speech-bubble');
 		bubble.style.display = 'block';
