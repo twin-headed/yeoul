@@ -181,29 +181,17 @@ textarea#wr_content {
 <link rel="stylesheet" href="/resources/summerNote/summernote-lite.css">
 	<style>
 		.speech-bubble {
-			display: none;
 			position: relative;
-			width: 145px;
+			width: 155px;
 			padding: 10px;
 			background-color: #fff;
 			border: 1px solid #0000003d;;
-			border-radius: 20px; /* 테두리의 곡률을 더 높임 */
+			border-radius: 0px; /* 테두리의 곡률을 더 높임 */
 			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-			margin-top: -5px;
-			margin-left: 7px;
+			border-bottom:none;
+			cursor:pointer;
+			display:none;
 		}
-
-		.speech-bubble:after {
-			content: '';
-			position: absolute;
-			bottom: 100%;
-			left: 50%;
-			margin-left: -10px;
-			border-width: 10px;
-			border-style: solid;
-			border-color: transparent transparent #ffc10736 transparent;
-		}
-
 	</style>
 </head>
 <body>
@@ -236,12 +224,16 @@ textarea#wr_content {
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li>
-							<span class="hlavny_" style="padding-left:0px; padding-right:0px; width:175px;">
-								<a style="height:30px;" href="javascript:void(0)" onmouseover="showBubble()" onmouseout="hideBubble()" >공략게시판</a>
-								<div class="speech-bubble" onmouseover="showBubble()" onmouseout="hideBubble()">
-									<p style="display:inline-block"><a href="/board/list?category=1" onmouseover="onHover(this)" onmouseout="outHover(this)" id="quest" style="color:black; cursor: pointer; text-decoration: none;">퀘스트공략</a></p>
-									&nbsp&nbsp
-									<p style="display:inline-block"><a href="/board/list?category=2" onmouseover="onHover(this)" onmouseout="outHover(this)" id="tip" style="color:black; cursor: pointer; text-decoration: none;">나만의팁</a></p>
+							<span id="board" class="hlavny_" style="padding-left:0px; padding-right:0px; width:175px;">
+								<a style="height:30px; text-decoration: none;" href="javascript:void(0)" >공략게시판</a>
+								<div class="speech-bubble">
+									<a href="/board/list?category=1" onmouseover="onHover(this)" onmouseout="outHover(this)" id="quest" style="color:black; cursor: pointer; text-decoration: none; padding:0px;">퀘스트공략</a>
+								</div>
+								<div class="speech-bubble">
+									<a href="/board/list?category=2" onmouseover="onHover(this)" onmouseout="outHover(this)" id="tip" style="color:black; cursor: pointer; text-decoration: none; padding:0px;">나만의팁</a>
+								</div>
+								<div class="speech-bubble">
+								<a href="/board/list?category=3" onmouseover="onHover(this)" onmouseout="outHover(this)" id="free" style="color:black; cursor: pointer; text-decoration: none; padding:0px;">자유게시판</a>
 								</div>
 							</span>
 						</li>
@@ -379,6 +371,22 @@ textarea#wr_content {
 						}
 					}
 			  });
+		});
+
+		$(function(){
+			var gnb = $('#board');
+			var frq = 500; // 메뉴 이펙트 강도
+			var t; // t 변수를 mouseover 이벤트 핸들러 외부에서 정의
+
+			gnb.mouseover(function(){
+				t = $(this);
+				t.find("div:not(:animated)").slideDown(frq);
+			});
+
+			gnb.mouseleave(function(){
+				t = $(this);
+				t.find("div").slideUp(frq); // 수정된 부분: "div:animated"으로 변경
+			});
 		});
 
 		function showBubble() {
