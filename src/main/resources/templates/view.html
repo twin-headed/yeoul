@@ -203,6 +203,10 @@ textarea#wr_content {
 			border-style: solid;
 			border-color: transparent transparent #ffc10736 transparent;
 		}
+
+		#utext img {
+			margin-left:15%;
+		}
 	</style>
 </head>
 <body>
@@ -265,7 +269,7 @@ textarea#wr_content {
 							<span class="bo_v_comment"> 댓글 <strong th:text="${coCount}"></strong></span>
 						</div>
 					</section>
-					<div id="utext" style="height:fit-content; padding:2%; min-height:419px; position: relative; padding-left: 140px;" th:utext="${vo.content}">
+					<div id="utext" style="height:fit-content; padding:2%; min-height:419px; position: relative;" th:utext="${vo.content}">
 
 					</div>
 					<section id="bo_vc">

@@ -33,6 +33,10 @@ public class SessionListener implements HttpSessionListener {
         if(activeSessions > 0) {
             activeSessions--;
         }
+        if(activeSessions == 0 || (activeNames.size() == 0)) {
+            activeNames.clear();
+            activeSessions = 0;
+        }
     }
 
     public static int getActiveSessions() {
