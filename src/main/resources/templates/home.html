@@ -16,154 +16,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type"
 		  content="text/html; charset=UTF-8">
-	<style type="text/css">
-		div.wrap1 .wrap2 {
-			/* only with left panel- background-image: url(img/bg1.gif); */
-			/* right and left panel */
-			background-image: url(/resources/img/bg2.gif);
-			/* only with right panel - background-image: url(img/bg3.gif); */
-		}
-
-		.jumbotron {
-			background-size: cover; =
-		color: white;
-		}
-
-		*, *::before, *::after {
-			box-sizing: initial;
-		}
-
-		.input-border {
-			border: 0;
-			border-bottom: 1px solid #a6634754;
-			background: none;
-			outline: 0;
-			margin-left: 20px;
-			margin-top: 25px;
-			transition: border-bottom-color 0.3s ease; /* 부드러운 전환 효과를 위한 transition 설정 */
-		}
-
-		.input-border:focus {
-			border-color: black; /* 클릭 시 변경될 색상을 여기에 지정하세요 */
-		}
-
-		.lButton {
-			position: relative;
-			width: 50px;
-			height: 50px;
-			background-color: #c57033;
-			color: white;
-			border: none;
-			text-align: center;
-			text-decoration: none;
-			font-size: 16px;
-			cursor: pointer;
-			border-radius: 5px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			float: right;
-			margin-right: 29px;
-			margin-top: 5px;
-		}
-
-		.lButton::before {
-			content: "로그인";
-			font-size: 10px;
-			font-weight: bold;
-			text-shadow: 0px 0px 4px white, 0px 0px 6px white; /* 흰색 부분에 그림자 추가 */
-		}
-
-		.lButton:hover {
-			background-color: #964d0d;
-		}
-
-		.lButton:active {
-			background-color: #7b3e0a;
-		}
-
-		.welcome-message {
-			text-align: center;
-			margin-top: 20px;
-		}
-
-		.username {
-			font-size: 11px;
-			color: #333;
-		}
-
-		.greeting {
-			font-size: 18px;
-			margin-top: 10px;
-			color: #666;
-		}
-
-		.logout-link {
-			text-decoration: none;
-			color: #c57033;
-			font-size: 14px;
-			margin-top: 20px;
-		}
-
-		.logout-link:hover {
-			color: #964d0d;
-		}
-
-		.welcome-message {
-			text-align: center;
-			margin-top: 20px;
-			padding: 10px;
-			border-radius: 5px;
-			width: 170px;
-			margin-left: 10px;
-		}
-
-		.tooltip-text {
-			display: none;
-			position: absolute;
-			max-width: 200px;
-			border-radius: 15px;
-			padding: 5px;
-			font-size: 0.8em;
-			color: black;
-			background: #e9ecef;
-		}
-
-		.tooltip-icon:hover .tooltip-text {
-			display: initial;
-		}
-
-		.banner-wrapper {
-			overflow: auto; /* 배너 영역이 넘치면 스크롤이 생성됩니다. */
-			height: 100vh;
-			float: right;
-		}
-
-		.banner-wrapper::-webkit-scrollbar {
-			display: none;
-		}
-
-		.speech-bubble {
-			position: relative;
-			width: 155px;
-			padding: 10px;
-			background-color: #fff;
-			border: 1px solid #0000003d;;
-			border-radius: 0px; /* 테두리의 곡률을 더 높임 */
-			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-			border-bottom:none;
-			cursor:pointer;
-			display:none;
-		}
-
-		.outer-box {
-			padding: 20px;
-			text-align: center;
-			max-height: 300px;
-			overflow: hidden;
-			position: relative; /* 추가된 부분 */
-		}
-
+	<script src="/resources/js/jquery-3.1.1.js"></script>
+	<style>
 		.outer-box::before {
 			content: "접속멤버 [[${activeSessions}]]명";
 			display: block;
@@ -173,44 +27,7 @@
 			text-align: left;
 			margin-left: 4px;
 		}
-
-		.square-box {
-			position: relative;
-			width: 150px;
-			background-color: rgba(0, 0, 0, 0.125);
-			border-radius: 10px;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-			white-space: nowrap;
-			overflow-x: auto; /* 추가된 부분 */
-			max-height: 112px;
-			min-height: 112px;
-			margin-left: 2px;
-			padding-top: 10px;
-		}
-
-		.user {
-			font-size: 14px;
-			text-align: left;
-			padding-left: 15px;
-			cursor: default;
-		}
-
-		.scroll-tab {
-			position: absolute;
-			top: 0;
-			right: 0;
-			width: 10px;
-			height: 100%;
-			background-color: #bdc3c7;
-			cursor: pointer;
-			display: none; /* 추가된 부분 */
-		}
-
-		.scroll-tab:hover {
-			background-color: #95a5a6;
-		}
 	</style>
-	<script src="/resources/js/jquery-3.1.1.js"></script>
 </head>
 <body>
 <div class="wrap1">
@@ -407,5 +224,7 @@
 		}
 	}
 </script>
+<link rel="stylesheet" type="text/css" media="screen, projection"
+	  href="/resources/css/home.css?v=1">
 </body>
 </html>

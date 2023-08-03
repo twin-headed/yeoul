@@ -108,7 +108,7 @@ div.wrap1 .wrap2 {
 						<li></li>
 						<li><img src="/resources/img/divider2.png" alt=""></li>
 						<li>
-							<span id="board" class="hlavny_" style="padding-left:0px; padding-right:0px; width:175px;">
+							<span id="board" class="hlavny_" style="padding-left:0px; padding-right:0px; width:175px; z-index: 500;">
 								<a style="height:30px; text-decoration: none;" href="javascript:void(0)" >공략게시판</a>
 								<div class="speech-bubble">
 									<a href="/board/list?category=1" onmouseover="onHover(this)" onmouseout="outHover(this)" id="quest" style="color:black; cursor: pointer; text-decoration: none; padding:0px;">퀘스트공략</a>
@@ -257,7 +257,7 @@ div.wrap1 .wrap2 {
 					title: $("#title").val(),
 					content: $(".summernote").val(),
 					seq: seq,
-					noticeYn: document.querySelector('input[type="checkbox"]').checked? 'Y' : 'N',
+					noticeYn: document.querySelector('#flexCheckDefault')? (document.querySelector('input[type="checkbox"]').checked? 'Y' : 'N') : 'N',
 					category: category
 				}
 				
