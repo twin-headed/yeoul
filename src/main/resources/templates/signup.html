@@ -210,7 +210,7 @@
     iField.addEventListener('keydown', (e) => {
        if(e.key === 'Tab') {
            if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
-               iField.nextElementSibling.innerText = '* 4자리 이상의 영문 + 숫자아이디를 입력해주세요.';
+               iField.nextElementSibling.innerText = '* 4자리 이상의 영문 또는 영문 + 숫자아이디를 입력해주세요.';
                iField.nextElementSibling.style.visibility = "visible";
            }
        }else {
@@ -219,7 +219,7 @@
     });
     iField.addEventListener('blur', (e) => {
         if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
-            iField.nextElementSibling.innerText = '* 4자리 이상의 영문 + 숫자아이디를 입력해주세요.';
+            iField.nextElementSibling.innerText = '* 4자리 이상의 영문 또는 영문 + 숫자아이디를 입력해주세요.';
             iField.nextElementSibling.style.visibility = "visible";
         }else {
             iField.nextElementSibling.style.visibility = "hidden";
@@ -291,7 +291,7 @@
         var password2 = $("#password2").val();
 
         if(iField.value.trim() === '' || iField.value.trim().length < 4 || !regex.test(iField.value.trim())) {
-            alert('4자리 이상의 영문 + 숫자아이디를 입력해주세요.');
+            alert('4자리 이상의 영문 또는 영문 + 숫자아이디를 입력해주세요.');
             $("#id").focus();
             return false;
         }
