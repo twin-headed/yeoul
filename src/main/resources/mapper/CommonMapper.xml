@@ -14,7 +14,9 @@
 		, deleteYn
 		, b.viewCount
 		, c.commentCount
-		, row_number() over() as rowNum
+		, case
+		when b.noticeYn = 'N' then row_number() over(order by b.noticeYn asc, b.seq desc)
+		end as rowNum
 		, b.noticeYn
 		from board b
 		left join (select count(*) as commentCount, boardSeq from comment group by boardSeq) c
