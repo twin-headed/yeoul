@@ -469,7 +469,7 @@ textarea#wr_content {
 		});
 
 		/* 조회자가 해당글의 주인일시 추가하는 로직필요 */
-		if((id === name && authority === "ROLE_VIP") || (id === name && authority === "ROLE_ADMIN")) {
+		if((id === name && authority === "ROLE_VIP") || (authority === "ROLE_ADMIN")) {
 			$('#utext').after(
 					'<div style="text-align:right">' +
 					'<button id="modify" type="button" class="btn btn-dark btn-sm" id="modify" style="margin-bottom: 5px; margin-right: 5px;">수정</button>' +
