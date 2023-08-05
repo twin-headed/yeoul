@@ -1,6 +1,7 @@
 package com.myapp.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class FileController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	@ResponseBody
 	public String upload (@RequestParam("file") MultipartFile multipartFile) throws IOException{
-		System.out.println(multipartFile);
 		String originalName = multipartFile.getOriginalFilename(); // 파일 이름
-		String fileName = UUID.randomUUID() + originalName;
+		LocalDateTime now = LocalDateTime.now();
+		String fileName =  now.toString() + "_" + UUID.randomUUID();
 		long size = multipartFile.getSize(); // 파일 크기
 
 		ObjectMetadata objectMetaData = new ObjectMetadata();
