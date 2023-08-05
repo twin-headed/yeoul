@@ -44,7 +44,7 @@ public class FileController {
 						.withCannedAcl(CannedAccessControlList.PublicRead)
 		);
 
-		String imagePath = amazonS3Client.getUrl("yeoulserver", originalName).toString(); // 접근가능한 URL 가져오기
+		String imagePath = amazonS3Client.getUrl("yeoulserver", fileName).toString(); // 접근가능한 URL 가져오기
         return imagePath;
 	}
 
